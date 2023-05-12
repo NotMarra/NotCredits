@@ -1,0 +1,28 @@
+#  NotCredits plugin
+#     By NotMarra
+
+
+#Set which language the plugin should use
+#All available languages can be found in the lang folder
+#You can create your own lang file, just duplicate en.yml and rename it
+#Available lang files: en, cz
+lang: "en"
+
+#Style how to save data
+#Now its only possible to use MySQL and SQLite only:
+data: 'SQLite'
+
+#What will be the name of the file with the saved data (only works with SQLite)
+data_file: 'data.db'
+table: 'NotCredits'
+
+#If data is set to MySQL, enter the login information from MySQL
+mysql_hostname: ''
+mysql_port: '3306'
+mysql_username: ''
+mysql_database: ''
+mysql_password: ''
+mysql_url: 'jdbc:mysql://%hostname%:%port%/%database%'
+
+# The default credits balance of a first-time joiner.
+default_balance: 0
