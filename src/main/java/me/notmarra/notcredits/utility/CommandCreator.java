@@ -15,15 +15,9 @@ public class CommandCreator implements CommandExecutor {
 
     private final GetMessage message = new GetMessage();
     private final Notcredits plugin;
-    private static Database database = null;
 
     public CommandCreator(Notcredits plugin) {
         this.plugin = plugin;
-        try {
-            database = Database.getInstance();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -68,7 +62,7 @@ public class CommandCreator implements CommandExecutor {
                             }
 
                             try {
-                                database.setCreditsByUUID(player.getUniqueId().toString(), amount);
+                                Database.database.setCreditsByUUID(player.getUniqueId().toString(), amount);
 
                                 p.sendMessage(message.getString("prefix") + TextReplace.replacePlayerAndCredits(player, amount, message.getString("set_credits")));
                                 player.sendMessage(message.getString("prefix") + TextReplace.replaceAmount(amount, message.getString("credits_set")));
@@ -107,10 +101,10 @@ public class CommandCreator implements CommandExecutor {
                             }
 
                             try {
-                                long credits = database.getCreditsByUUID(player.getUniqueId().toString());
+                                long credits = Database.database.getCreditsByUUID(player.getUniqueId().toString());
                                 long final_credits = credits + amount;
 
-                                database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
+                                Database.database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
 
                                 p.sendMessage(message.getString("prefix") + TextReplace.replacePlayerAndCredits(player, amount, message.getString("add_credits")));
                                 player.sendMessage(message.getString("prefix") + TextReplace.replaceAmount(amount, message.getString("credits_add")));
@@ -152,10 +146,10 @@ public class CommandCreator implements CommandExecutor {
 
 
                             try {
-                                long credits = database.getCreditsByUUID(player.getUniqueId().toString());
+                                long credits = Database.database.getCreditsByUUID(player.getUniqueId().toString());
                                 long final_credits = credits - amount;
 
-                                database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
+                                Database.database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
 
                                 p.sendMessage(message.getString("prefix") + TextReplace.replacePlayerAndCredits(player, amount, message.getString("remove_credits")));
                                 player.sendMessage(message.getString("prefix") + TextReplace.replaceAmount(amount, message.getString("credits_remove")));
@@ -204,7 +198,7 @@ public class CommandCreator implements CommandExecutor {
                             }
 
                             try {
-                                database.setCreditsByUUID(player.getUniqueId().toString(), amount);
+                                Database.database.setCreditsByUUID(player.getUniqueId().toString(), amount);
 
                                 Bukkit.getServer().getLogger().info("[NotCredits] " + TextReplace.replacePlayerAndCredits(player, amount, message.getString("set_credits")));
                                 player.sendMessage(message.getString("prefix") + TextReplace.replaceAmount(amount, message.getString("credits_set")));
@@ -237,10 +231,10 @@ public class CommandCreator implements CommandExecutor {
                             }
 
                             try {
-                                long credits = database.getCreditsByUUID(player.getUniqueId().toString());
+                                long credits = Database.database.getCreditsByUUID(player.getUniqueId().toString());
                                 long final_credits = credits + amount;
 
-                                database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
+                                Database.database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
 
                                 Bukkit.getServer().getLogger().info("[NotCredits] " + TextReplace.replacePlayerAndCredits(player, amount, message.getString("add_credits")));
                                 player.sendMessage(message.getString("prefix") + TextReplace.replaceAmount(amount, message.getString("credits_add")));
@@ -276,10 +270,10 @@ public class CommandCreator implements CommandExecutor {
                             }
 
                             try {
-                                long credits = database.getCreditsByUUID(player.getUniqueId().toString());
+                                long credits = Database.database.getCreditsByUUID(player.getUniqueId().toString());
                                 long final_credits = credits - amount;
 
-                                database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
+                                Database.database.setCreditsByUUID(player.getUniqueId().toString(), final_credits);
 
                                 Bukkit.getServer().getLogger().info("[NotCredits] " + TextReplace.replacePlayerAndCredits(player, amount, message.getString("remove_credits")));
                                 player.sendMessage(message.getString("prefix") + TextReplace.replaceAmount(amount, message.getString("remove_credits")));

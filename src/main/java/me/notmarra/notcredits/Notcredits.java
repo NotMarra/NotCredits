@@ -1,13 +1,11 @@
 package me.notmarra.notcredits;
 
 import me.notmarra.notcredits.Listeners.Placeholders;
-import me.notmarra.notcredits.Listeners.playerJoin;
-import me.notmarra.notcredits.utility.CommandCreator;
-import me.notmarra.notcredits.utility.Files;
+import me.notmarra.notcredits.Listeners.PlayerJoin;
+import me.notmarra.notcredits.utility.*;
 import me.notmarra.notcredits.Data.Database;
 
-import me.notmarra.notcredits.utility.GetMessage;
-import me.notmarra.notcredits.utility.TabCompletion;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,8 +16,11 @@ public final class Notcredits extends JavaPlugin {
 
     FileConfiguration config;
     public static Notcredits main;
-    private Database database;
-    Files files = new Files();
+    String pluginVersion = getDescription().getVersion();
+    String pluginName = getName();
+    String serverUrl = "https://raw.githubusercontent.com/NotMarra/NotCredits/main/version.txt";
+    Updater updater = new Updater(this, pluginVersion, pluginName, serverUrl);
+
 
     @Override
     public void onEnable() {
@@ -57,17 +58,17 @@ public final class Notcredits extends JavaPlugin {
                 }
             //db intialize
                 try {
-                    database = Database.getInstance();
-                    database.initializeDatabase();
+                    Database.database.initializeDatabase();
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    Bukkit.getPluginManager().disablePlugin(this);
                 }
 
         //lang
         Files.createFolder("lang");
         Files.createFile("lang/en.yml");
         Files.createFile("lang/cz.yml");
-        files.updateLanguageFiles();
+        updater.checkAndAddMissingLangStrings();
 
         //tab complete
         getCommand("credits").setTabCompleter(new TabCompletion());
@@ -76,7 +77,7 @@ public final class Notcredits extends JavaPlugin {
         this.getCommand("credits").setExecutor(new CommandCreator(this));
 
         //register events
-        getServer().getPluginManager().registerEvents(new playerJoin(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
 
         //placeholders
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -85,6 +86,13 @@ public final class Notcredits extends JavaPlugin {
         } else {
             Bukkit.getServer().getLogger().info("[NotCredits] PlaceholderAPI not found, not loading placeholders!");
         }
+
+        //bstats
+        int pluginId = 18464;
+        Metrics metrics = new Metrics(this, pluginId);
+
+        //update check
+        updater.checkForUpdates();
 
         // start msg
         Bukkit.getServer().getLogger().info("[NotCredits] Loaded successfully");
@@ -95,7 +103,7 @@ public final class Notcredits extends JavaPlugin {
         // Plugin shutdown logic
 
         try {
-            database.closeConnection();
+            Database.database.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -108,7 +116,7 @@ public final class Notcredits extends JavaPlugin {
     }
 
     public Database getDatabase() {
-        return database;
+        return Database.database;
     }
 
     public void reload() {

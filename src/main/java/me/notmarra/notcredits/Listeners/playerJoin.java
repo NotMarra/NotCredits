@@ -12,26 +12,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.SQLException;
 
-public class playerJoin implements Listener {
-    private Database database = null;
+public class PlayerJoin implements Listener {
     private FileConfiguration config = Notcredits.main.getConfig();
-
-    public playerJoin() {
-        try {
-            this.database = Database.getInstance();
-        } catch (SQLException error) {
-            error.printStackTrace();
-        }
-    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         try {
-            Data data = database.findPlayerByUUID(p.getUniqueId().toString());
+            Data data = Database.database.findPlayerByUUID(p.getUniqueId().toString());
 
             if (data == null) {
-                database.addPlayerData(p.getUniqueId().toString(), p.getName(), config.getLong("default_balance"));
+                Database.database.addPlayerData(p.getUniqueId().toString(), p.getName(), config.getLong("default_balance"));
             }
         } catch (SQLException error) {
             error.printStackTrace();

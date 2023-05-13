@@ -2,13 +2,12 @@ package me.notmarra.notcredits.Listeners;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.notmarra.notcredits.Data.Database;
+import me.notmarra.notcredits.Notcredits;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 
 public class Placeholders extends PlaceholderExpansion {
-    private static Database database = null;
-
     @Override
     public boolean canRegister() {
         return true;
@@ -26,7 +25,7 @@ public class Placeholders extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return "1.0.0-SNAPSHOT";
+        return Notcredits.main.getDescription().getVersion();
     }
 
     @Override
@@ -35,17 +34,11 @@ public class Placeholders extends PlaceholderExpansion {
             return "";
         }
 
-        try {
-            this.database = Database.getInstance();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         if (identifier.equals("amount")) {
             String pname = player.getUniqueId().toString();
             long credits = 0;
             try {
-                credits = database.getCreditsByUUID(pname);
+                credits = Database.database.getCreditsByUUID(pname);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

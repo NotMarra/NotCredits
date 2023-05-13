@@ -1,11 +1,9 @@
 package me.notmarra.notcredits.utility;
 
 import me.notmarra.notcredits.Notcredits;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class Files {
 
@@ -33,39 +31,6 @@ public class Files {
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void updateLanguageFiles() {
-        File langFolder = new File(Notcredits.getInstance().getDataFolder(), "lang");
-        if (!langFolder.exists()) {
-            langFolder.mkdir();
-        }
-
-        // Iterate over each language file
-        for (String lang : Arrays.asList("cz", "en")) {
-            File langFile = new File(langFolder, lang + ".yml");
-            // Check if the language file already exists
-            if (!langFile.exists()) {
-                // If the language file doesn't exist, create it from the resource file
-                Notcredits.getInstance().saveResource("lang/" + lang + ".yml", false);
-            } else {
-                // If the language file exists, load it and merge it with the resource file
-                YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
-                YamlConfiguration resourceConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(
-                        Notcredits.getInstance().getResource("lang/" + lang + ".yml")));
-
-                // Merge the resource file into the language file
-                langConfig.setDefaults(resourceConfig);
-                langConfig.options().copyDefaults(true);
-
-                // Save the updated language file
-                try {
-                    langConfig.save(langFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }

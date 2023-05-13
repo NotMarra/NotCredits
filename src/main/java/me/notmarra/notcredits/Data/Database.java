@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Database {
     FileConfiguration config = Notcredits.main.getConfig();
 
-    private static Database instance = null;
+    public static Database database = null;
     private Connection connection = null;
 
     private Database() throws SQLException {
@@ -48,11 +48,11 @@ public class Database {
     }
 
     public static Database getInstance() throws SQLException {
-        if (instance == null) {
-            instance = new Database();
+        if (database == null) {
+            database = new Database();
         }
 
-        return instance;
+        return database;
     }
 
     public Connection getConnection() {
