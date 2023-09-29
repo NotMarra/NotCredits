@@ -1,28 +1,30 @@
+/* Decompiler 5ms, total 129ms, lines 30 */
 package me.notmarra.notcredits.utility;
-
-import org.bukkit.ChatColor;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.bukkit.ChatColor;
 
 public class HexColors {
-    public static String translate(String message) {
-        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-        Matcher matcher = pattern.matcher(message);
+   public static String translate(String message) {
+      Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
 
-        while (matcher.find()) {
-            String hexCode = message.substring(matcher.start(), matcher.end());
-            String replaceSharp = hexCode.replace('#', 'x');
+      for(Matcher matcher = pattern.matcher(message); matcher.find(); matcher = pattern.matcher(message)) {
+         String hexCode = message.substring(matcher.start(), matcher.end());
+         String replaceSharp = hexCode.replace('#', 'x');
+         char[] ch = replaceSharp.toCharArray();
+         StringBuilder builder = new StringBuilder();
+         char[] var7 = ch;
+         int var8 = ch.length;
 
-            char[] ch = replaceSharp.toCharArray();
-            StringBuilder builder = new StringBuilder();
-            for (char c : ch) {
-                builder.append("&" + c);
-            }
+         for(int var9 = 0; var9 < var8; ++var9) {
+            char c = var7[var9];
+            builder.append("&" + c);
+         }
 
-            message = message.replace(hexCode, builder.toString());
-            matcher = pattern.matcher(message);
-        }
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
+         message = message.replace(hexCode, builder.toString());
+      }
+
+      return ChatColor.translateAlternateColorCodes('&', message);
+   }
 }
