@@ -83,8 +83,9 @@ public class TabCompletion implements TabCompleter {
       }
 
       currentArg = args[args.length - 1];
+      String finalCurrentArg = currentArg;
       completions.removeIf((s) -> {
-         return !s.startsWith(currentArg);
+         return !s.startsWith(finalCurrentArg);
       });
       return completions;
    }

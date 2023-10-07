@@ -1,5 +1,5 @@
 /* Decompiler 3ms, total 122ms, lines 28 */
-package me.notmarra.notcredits.Data;
+package me.notmarra.notcredits.data;
 
 public class Account {
    private String playerName;

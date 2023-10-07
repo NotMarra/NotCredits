@@ -1,12 +1,12 @@
 /* Decompiler 10ms, total 138ms, lines 129 */
 package me.notmarra.notcredits;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import me.notmarra.notcredits.Data.Database;
-import me.notmarra.notcredits.Listeners.Economy_NotCredits;
-import me.notmarra.notcredits.Listeners.Placeholders;
-import me.notmarra.notcredits.Listeners.PlayerJoin;
-import me.notmarra.notcredits.bukkit.Metrics;
+import me.notmarra.notcredits.data.Database;
+import me.notmarra.notcredits.listeners.Economy_NotCredits;
+import me.notmarra.notcredits.listeners.Placeholders;
+import me.notmarra.notcredits.listeners.PlayerJoin;
 import me.notmarra.notcredits.utility.CommandCreator;
 import me.notmarra.notcredits.utility.Files;
 import me.notmarra.notcredits.utility.GetMessage;
@@ -18,9 +18,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class Notcredits extends JavaPlugin {
    private Economy_NotCredits economy;
+   private Connection connection;
    FileConfiguration config;
    public static Notcredits main;
    String pluginVersion = this.getDescription().getVersion();
@@ -64,11 +66,29 @@ public final class Notcredits extends JavaPlugin {
 
       try {
          Database.database = Database.getInstance();
+         connection = Database.database.getConnection();
          Database.database.initializeDatabase();
       } catch (SQLException var5) {
          var5.printStackTrace();
          Bukkit.getPluginManager().disablePlugin(this);
       }
+
+      int dbInterval = 300;
+      new BukkitRunnable() {
+         @Override
+         public void run() {
+            if (connection != null) {
+               try {
+                  if (!connection.isValid(2)) {
+                     Database.database = Database.getInstance();
+                     connection = Database.database.getConnection();
+                  }
+               } catch (SQLException e) {
+                   throw new RuntimeException(e);
+               }
+            }
+         }
+      }.runTaskTimer(this, 0, dbInterval * 20);
 
       if (this.config.getBoolean("vault")) {
          if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
@@ -95,8 +115,6 @@ public final class Notcredits extends JavaPlugin {
          Bukkit.getServer().getLogger().info("[NotCredits] PlaceholderAPI not found, not loading placeholders!");
       }
 
-      int pluginId = 18464;
-      new Metrics(this, pluginId);
       this.updater.checkForUpdates();
       Bukkit.getServer().getLogger().info("[NotCredits] Loaded successfully");
    }

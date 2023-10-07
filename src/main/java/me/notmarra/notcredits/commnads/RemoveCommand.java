@@ -3,7 +3,7 @@ package me.notmarra.notcredits.Commands;
 
 import java.sql.SQLException;
 import java.util.logging.Logger;
-import me.notmarra.notcredits.Data.Database;
+import me.notmarra.notcredits.data.Database;
 import me.notmarra.notcredits.utility.GetMessage;
 import me.notmarra.notcredits.utility.TextReplace;
 import org.bukkit.Bukkit;

@@ -1,9 +1,9 @@
 /* Decompiler 22ms, total 155ms, lines 226 */
-package me.notmarra.notcredits.Listeners;
+package me.notmarra.notcredits.listeners;
 
 import java.sql.SQLException;
 import java.util.List;
-import me.notmarra.notcredits.Data.Database;
+import me.notmarra.notcredits.data.Database;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;

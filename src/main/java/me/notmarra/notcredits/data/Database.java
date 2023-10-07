@@ -1,5 +1,5 @@
 /* Decompiler 15ms, total 138ms, lines 201 */
-package me.notmarra.notcredits.Data;
+package me.notmarra.notcredits.data;
 
 import java.io.File;
 import java.sql.Connection;
@@ -12,6 +12,7 @@ import me.notmarra.notcredits.Notcredits;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+
 
 public class Database {
    FileConfiguration config;

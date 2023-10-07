@@ -1,10 +1,10 @@
 name: NotCredits
-version: '1.0.4-SNAPSHOT'
+version: '1.0.5-SNAPSHOT'
 main: me.notmarra.notcredits.Notcredits
 api-version: 1.19
 authors: [ NotMarra ]
 description: Economy plugin
-website: www.notstudio.cz
+website: www.notmarra.cz
 softdepend: [PlaceholderAPI, Vault]
 commands:
   credits:

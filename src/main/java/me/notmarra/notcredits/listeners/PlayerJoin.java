@@ -1,9 +1,9 @@
 /* Decompiler 3ms, total 122ms, lines 34 */
-package me.notmarra.notcredits.Listeners;
+package me.notmarra.notcredits.listeners;
 
 import java.sql.SQLException;
 import me.notmarra.notcredits.Notcredits;
-import me.notmarra.notcredits.Data.Database;
+import me.notmarra.notcredits.data.Database;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
