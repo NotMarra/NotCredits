@@ -3,7 +3,7 @@ package me.notmarra.notcredits;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import me.notmarra.notcredits.data.Database;
+
 import me.notmarra.notcredits.listeners.Economy_NotCredits;
 import me.notmarra.notcredits.listeners.Placeholders;
 import me.notmarra.notcredits.listeners.PlayerJoin;
@@ -24,7 +24,7 @@ public final class Notcredits extends JavaPlugin {
    private Economy_NotCredits economy;
    private Connection connection;
    FileConfiguration config;
-   public static Notcredits main;
+   private static Notcredits main;
    String pluginVersion = this.getDescription().getVersion();
    String pluginName = this.getName();
    String serverUrl = "https://raw.githubusercontent.com/NotMarra/NotCredits/main/version.txt";
@@ -133,9 +133,6 @@ public final class Notcredits extends JavaPlugin {
       return main;
    }
 
-   public Database getDatabase() {
-      return Database.database;
-   }
 
    public void reload() {
       main.reloadConfig();

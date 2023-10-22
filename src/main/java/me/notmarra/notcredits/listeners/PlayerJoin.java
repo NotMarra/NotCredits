@@ -14,7 +14,7 @@ public class PlayerJoin implements Listener {
    private FileConfiguration config;
 
    public PlayerJoin() {
-      this.config = Notcredits.main.getConfig();
+      this.config = Notcredits.getInstance().getConfig();
    }
 
    @EventHandler
@@ -22,7 +22,7 @@ public class PlayerJoin implements Listener {
       Player p = e.getPlayer();
 
       try {
-         String data = Database.database.findPlayerByUUID(p.getUniqueId().toString());
+         String data = Database.getHikari().getPlayerData(p.getUniqueId().toString());
          if (data == null) {
             Database.database.addPlayerData(p.getUniqueId().toString(), p.getName(), this.config.getLong("default_balance"));
          }

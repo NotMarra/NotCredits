@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.notmarra.notcredits.Notcredits;
-import me.notmarra.notcredits.data.Database;
 import org.bukkit.entity.Player;
 
 public class Placeholders extends PlaceholderExpansion {
@@ -22,7 +21,7 @@ public class Placeholders extends PlaceholderExpansion {
    }
 
    public String getVersion() {
-      return Notcredits.main.getDescription().getVersion();
+      return Notcredits.getInstance().getDescription().getVersion();
    }
 
    public String onPlaceholderRequest(Player player, String identifier) {
@@ -38,8 +37,8 @@ public class Placeholders extends PlaceholderExpansion {
             var7.printStackTrace();
          }
 
-         if (Notcredits.main.getConfig().getBoolean("balance_decimal")) {
-            DecimalFormat decimalFormat = new DecimalFormat(Notcredits.main.getConfig().getString("balance_format"));
+         if (Notcredits.getInstance().getConfig().getBoolean("balance_decimal")) {
+            DecimalFormat decimalFormat = new DecimalFormat(Notcredits.getInstance().getConfig().getString("balance_format"));
             return String.valueOf(decimalFormat.format(credits));
          } else {
             return String.valueOf(Math.round(credits));

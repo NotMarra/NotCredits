@@ -4,7 +4,6 @@ package me.notmarra.notcredits.utility;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import me.notmarra.notcredits.Notcredits;
-import me.notmarra.notcredits.data.Database;
 import org.bukkit.entity.Player;
 
 public class TextReplace {
