@@ -1,5 +1,5 @@
 name: NotCredits
-version: '1.0.5-SNAPSHOT'
+version: '1.0'
 main: me.notmarra.notcredits.Notcredits
 api-version: 1.19
 authors: [ NotMarra ]
