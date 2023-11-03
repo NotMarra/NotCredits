@@ -3,32 +3,33 @@
 #
 #   Czech Language
 
-prefix: "#04bf52&lKredity &8» &7"
+prefix: "<gradient:#0077ff:#005ec9><b>Kredity</b></gradient> <dark_gray>»</dark_gray> <white>"
 help:
-  - "&8&m-----------------------------------------------"
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
   - ""
-  - "#04bf52&l/credits&7 - Ukáže, kolik má hráč kreditů.."
-  - "#04bf52&l/credits set <player> <amount>&7 - Nastaví počet kreditů hráče."
-  - "#04bf52&l/credits add <player> <amount>&7 - Přidá hráči kredity."
-  - "#04bf52&l/credits remove <player> <amount>&7 - Odebere kredity hráče."
-  - "#04bf52&l/credits reload&7 - Opětovné načtení pluginu."
+  - "<#0077ff><bold>/credits</bold></#0077ff><gray> - Ukáže, kolik má hráč kreditů..."
+  - "<#0077ff><bold>/credits set <hráč> <množství></bold></#0077ff><gray> - Nastaví počet kreditů hráči."
+  - "<#0077ff><bold>/credits add <hráč> <množství></bold></#0077ff><gray> - Přidá hráči kredity."
+  - "<#0077ff><bold>/credits remove <hráč> <množství></bold></#0077ff><gray> - Odebere kredity hráči."
+  - "<#0077ff><bold>/credits reload</bold></#0077ff><gray> - Opětovné načtení pluginu."
   - ""
-  - "&8&m-----------------------------------------------"
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
   -
-  #player commands
-credits: "Nyní máš #04bf52&l%credits%&7 kreditů."
-credits_set: "Kredity ti byly nastaveny na #04bf52&l%amount%&7!"
-credits_add: "Bylo ti přídáno #04bf52&l%amount%&7 kreditů!"
-credits_remove: "Bylo ti odebráno #04bf52&l%amount%&7 kreditů!"
+
+#player commands
+credits: "Nyní máš <#005ec9><b>%credits%</b></#005ec9><white> kreditů."
+credits_set: "Kredity ti byly nastaveny na <#005ec9><b>%amount%</b></#005ec9><white>!"
+credits_add: "Bylo ti přídáno <#005ec9><b>%amount%</b></#005ec9><white> kreditů!"
+credits_remove: "Bylo ti odebráno <#005ec9><b>%amount%</b></#005ec9><white> kreditů!"
 
 #admin commands
 invalid_use_set: "Neplatné použití příkazu, použij: /credits set <hráč> <množství>!"
 invalid_use_add: "Neplatné použití příkazu, použij: /credits add <hráč> <množství>!"
 invalid_use_remove: "Neplatné použití příkazu, použij: /credits remove <hráč> <množství>!"
 
-set_credits: "Nastavil jsi hráči #04bf52&l%player%&7 kredity na #04bf52&l%amount%&7!"
-add_credits: "Přidal jsi #04bf52&l%amount%&7 kreditů hráči #04bf52&l%player%&7!"
-remove_credits: "Odebrali jste #04bf52&l%amount%&7 kreditů hráči #04bf52&l%player%&7."
+set_credits: "Nastavil jsi hráči <#005ec9><b>%player%</b></#005ec9><white> kredity na <#005ec9><b>%amount%</b></#005ec9><white>!"
+add_credits: "Přidal jsi <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>!"
+remove_credits: "Odebrali jste <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>."
 reload: "Plugin byl úspěšně přenačten!"
 
 #errors

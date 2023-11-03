@@ -3,32 +3,32 @@
 #
 #   English Language
 
-prefix: "#04bf52&lCredits &8» &7"
+prefix: "<gradient:#0077ff:#005ec9><b>Kredity</b></gradient> <dark_gray>»</dark_gray> <white>"
 help:
-  - "&8&m-----------------------------------------------"
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
   - ""
-  - "#04bf52&l/credits&7 - Shows how many credits the player has."
-  - "#04bf52&l/credits set <player> <amount>&7 - Sets the player's credit count."
-  - "#04bf52&l/credits add <player> <amount>&7 - Adds credits to the player."
-  - "#04bf52&l/credits remove <player> <amount>&7 - Removes player credits."
-  - "#04bf52&l/credits reload&7 - Reload the plugin."
+  - "<#0077ff><bold>/credits</bold></#0077ff><gray> - Shows how many credits the player has."
+  - "<#0077ff><bold>/credits set <player> <amount></bold></#0077ff><gray> - Sets the player's credit count."
+  - "<#0077ff><bold>/credits add <player> <amount></bold></#0077ff><gray> - Adds credits to the player."
+  - "<#0077ff><bold>/credits remove <player> <amount></bold></#0077ff><gray> - Removes player credits."
+  - "<#0077ff><bold>/credits reload</bold></#0077ff><gray> - Reload the plugin."
   - ""
-  - "&8&m-----------------------------------------------"
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
 
 #player commands
-credits: "You have #04bf52&l%credits%&7 credits."
-credits_set: "Your credits have been set to #04bf52&l%amount%&7!"
-credits_add: "You have been given #04bf52&l%amount%&7 credits."
-credits_remove: "A #04bf52&l%amount%&7 of credits have been removed."
+credits: "You have <#005ec9><b>%credits%</b></#005ec9><white> credits."
+credits_set: "Your credits have been set to <#005ec9><b>%amount%</b></#005ec9><white>!"
+credits_add: "You have been given <#005ec9><b>%amount%</b></#005ec9><white> credits."
+credits_remove: "A <#005ec9><b>%amount%</b></#005ec9><white> of credits have been removed."
 
 #admin commands
 invalid_use_set: "Invalid use of command, use: /credits set <player> <amount>!"
 invalid_use_add: "Invalid use of command, use: /credits add <player> <amount>!"
 invalid_use_remove: "Invalid use of command, use: /credits remove <player> <amount>!"
 
-set_credits: "You set #04bf52&l%player%'s&7 credits to #04bf52&l%amount%&7!"
-add_credits: "You added #04bf52&l%amount%&7 credits to #04bf52&l%player%&7!"
-remove_credits: "You have removed #04bf52&l%amount%&7 of credits from #04bf52&l%player%&7."
+set_credits: "You set <#005ec9><b>%player%'s</b></#005ec9><white> credits to <#005ec9><b>%amount%</b></#005ec9><white>!"
+add_credits: "You added <#005ec9><b>%amount%</b></#005ec9><white> credits to <#005ec9><b>%player%</b></#005ec9><white>!"
+remove_credits: "You have removed <#005ec9><b>%amount%</b></#005ec9><white> of credits from <#005ec9><b>%player%</b></#005ec9><white>."
 reload: "Plugin has been successfully reloaded!"
 
 #errors
