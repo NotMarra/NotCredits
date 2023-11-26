@@ -3,7 +3,7 @@
 #
 #   English Language
 
-prefix: "<gradient:#0077ff:#005ec9><b>Kredity</b></gradient> <dark_gray>»</dark_gray> <white>"
+prefix: "<gradient:#0077ff:#005ec9><b>Credits</b></gradient> <dark_gray>»</dark_gray> <white>"
 help:
   - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
   - ""
