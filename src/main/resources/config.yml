@@ -19,7 +19,7 @@ data:
 
   #If data type is set to MySQL, enter the login information from MySQL
   mysql:
-    hostname: ''
+    host: ''
     port: 3306
     username: ''
     database: ''

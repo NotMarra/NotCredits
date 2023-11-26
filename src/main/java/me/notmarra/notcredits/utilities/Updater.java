@@ -29,7 +29,7 @@ public class Updater {
             if (!currentVersion.equals(latestVersion)) {
                 plugin.getLogger().warning("There is a new version of " + pluginName + " available! You are running version " + currentVersion + ", the latest version is " + latestVersion + ". Download it at " + pluginURL);
             } else {
-                plugin.getLogger().warning("You are running the latest version of " + pluginName + "!");
+                plugin.getLogger().info("You are running the latest version of " + pluginName + "!");
             }
         } else {
             plugin.getLogger().warning("Failed to check for updates!");
@@ -66,7 +66,7 @@ public class Updater {
             Notcredits.getInstance().saveResource(fileName, false);
         } else {
             try {
-                URL url = new URL("https://raw.githubusercontent.com/notmarra/NotCredits/main/resources/" + fileName);
+                URL url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/main/src/main/resources/" + fileName);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(5000);

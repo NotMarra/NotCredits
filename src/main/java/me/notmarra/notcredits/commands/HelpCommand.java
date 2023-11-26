@@ -12,7 +12,7 @@ public class HelpCommand {
     public static void execute(CommandSender sender) {
         if (sender instanceof Player) {
             Player p = (Player)sender;
-            List<String> list = Collections.singletonList(Messages.getStringList("help"));
+            List<String> list = Collections.singletonList(Messages.messageGetStringList("help"));
             Iterator string = list.iterator();
 
             while(string.hasNext()) {
