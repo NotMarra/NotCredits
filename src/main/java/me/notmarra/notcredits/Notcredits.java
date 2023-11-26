@@ -4,6 +4,7 @@ package me.notmarra.notcredits;
 import me.notmarra.notcredits.data.Database;
 import me.notmarra.notcredits.listeners.Economy_NotCredits;
 import me.notmarra.notcredits.listeners.Placeholders;
+import me.notmarra.notcredits.listeners.Playerjoin;
 import me.notmarra.notcredits.utilities.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -57,10 +58,10 @@ public final class Notcredits extends JavaPlugin {
       Metrics metrics = new Metrics(this, 18464);
 
       Lang.createLang();
+      this.getServer().getPluginManager().registerEvents(new Playerjoin(), this);
       this.getCommand("credits").setExecutor(new CommandCreator());
       this.getCommand("credits").setTabCompleter(new TabCompletion());
       this.updater.checkForUpdates();
-      Updater.checkFilesAndUpdate("config.yml", "lang/en.yml", "lang/cz.yml");
 
 
       Bukkit.getServer().getLogger().info("[NotCredits] Enabled successfully!");
@@ -79,6 +80,6 @@ public final class Notcredits extends JavaPlugin {
    public void reload() {
       this.reloadConfig();
       this.config = this.getConfig();
-      this.getLogger().info("[NotCredits] Plugin reloaded successfully!");
+      this.getLogger().info("Plugin reloaded successfully!");
    }
 }

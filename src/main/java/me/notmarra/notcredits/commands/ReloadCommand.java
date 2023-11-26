@@ -11,10 +11,10 @@ public class ReloadCommand {
         if (sender instanceof Player) {
             Player p = (Player)sender;
             if (!p.hasPermission("notcredits.reload") || !p.hasPermission("notcredits.*")) {
-                p.sendMessage(Messages.mm(Messages.getString("no-perm")));
+                p.sendMessage(Messages.mm(Messages.messageGetString("no-perm")));
             } else {
                 Notcredits.getInstance().reload();
-                p.sendMessage(Messages.mm(Messages.getString("reload")));
+                p.sendMessage(Messages.mm(Messages.messageGetString("reload")));
             }
         } else {
             Notcredits.getInstance().reload();

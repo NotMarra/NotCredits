@@ -11,7 +11,7 @@ public class Playerjoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (Database.getInstance().findPlayerByUUID(String.valueOf(player.getUniqueId())) != null){
+        if (Database.getInstance().findPlayerByUUID(String.valueOf(player.getUniqueId())) == null){
             Database.getInstance().addPlayerData(player.getUniqueId().toString(), player.getName(), Notcredits.getInstance().getConfig().getDouble("default-balance"));
         }
     }

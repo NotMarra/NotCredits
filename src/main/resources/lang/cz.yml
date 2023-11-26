@@ -14,7 +14,6 @@ help:
   - "<#0077ff><bold>/credits reload</bold></#0077ff><gray> - Opětovné načtení pluginu."
   - ""
   - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
-  -
 
 #player commands
 credits: "Nyní máš <#005ec9><b>%credits%</b></#005ec9><white> kreditů."
