@@ -39,3 +39,5 @@ balance_format: '#.##'
 #If this is set to true, the plugin will create a vault economy.
 #The Vault plugin is required on the server!
 vault: false
+
+test: true
