@@ -1,4 +1,4 @@
-package me.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

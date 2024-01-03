@@ -1,12 +1,11 @@
-package me.notmarra.notcredits.listeners;
+package com.notmarra.notcredits.listeners;
 
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
+import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.data.Database;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.notmarra.notcredits.Notcredits;
-import me.notmarra.notcredits.data.Database;
 import org.bukkit.entity.Player;
 
 public class Placeholders extends PlaceholderExpansion {

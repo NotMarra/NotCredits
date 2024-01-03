@@ -1,5 +1,4 @@
-package me.notmarra.notcredits.utilities;
-
+package com.notmarra.notcredits.utilities;
 
 public class Lang {
         public static void createLang() {

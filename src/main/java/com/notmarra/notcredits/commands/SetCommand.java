@@ -1,8 +1,8 @@
-package me.notmarra.notcredits.commands;
+package com.notmarra.notcredits.commands;
 
-import me.notmarra.notcredits.data.Database;
-import me.notmarra.notcredits.utilities.Decimal;
-import me.notmarra.notcredits.utilities.Messages;
+import com.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.utilities.Decimal;
+import com.notmarra.notcredits.utilities.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,6 +14,8 @@ public class SetCommand {
         if (sender instanceof Player) {
             Player p = (Player)sender;
             if (!p.hasPermission("notcredits.set") || !p.hasPermission("notcredits.*")) {
+                p.sendMessage(Messages.mm(Messages.messageGetString("no-perm")));
+            } else {
                 if (args.length == 3) {
                     playerName = args[1];
                     player = org.bukkit.Bukkit.getPlayer(playerName);
@@ -34,7 +36,7 @@ public class SetCommand {
                         p.sendMessage(Messages.mm(Messages.messageReplaceMultiple(Messages.messageGetString("set_credits"), new String[]{"%amount%", "%player%"}, new String[]{Decimal.formatBalance(amount), playerName})));
                         player.sendMessage(Messages.mm(Messages.messageReplace(Messages.messageGetString("credits_set"), "%amount%", Decimal.formatBalance(amount))));
                     } else {
-                        p.sendMessage(Messages.mm(Messages.messageGetString("invalid_use_set")));
+                        p.sendMessage(Messages.mm(Messages.messageGetString("player_not_found")));
                     }
                 } else {
                     p.sendMessage(Messages.mm(Messages.messageGetString("invalid_use_set")));

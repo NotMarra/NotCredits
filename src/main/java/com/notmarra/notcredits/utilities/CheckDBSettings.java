@@ -1,6 +1,6 @@
-package me.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.utilities;
 
-import me.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.Notcredits;
 import org.bukkit.Bukkit;
 
 public class CheckDBSettings {

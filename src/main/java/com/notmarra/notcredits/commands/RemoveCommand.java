@@ -1,8 +1,8 @@
-package me.notmarra.notcredits.commands;
+package com.notmarra.notcredits.commands;
 
-import me.notmarra.notcredits.data.Database;
-import me.notmarra.notcredits.utilities.Decimal;
-import me.notmarra.notcredits.utilities.Messages;
+import com.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.utilities.Decimal;
+import com.notmarra.notcredits.utilities.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -40,7 +40,7 @@ public class RemoveCommand {
                         p.sendMessage(Messages.mm(Messages.messageReplaceMultiple(Messages.messageGetString("remove_credits"), new String[]{"%amount%", "%player%"}, new String[]{Decimal.formatBalance(final_credits), playerName})));
                         player.sendMessage(Messages.mm(Messages.messageReplace(Messages.messageGetString("credits_remove"), "%amount%", Decimal.formatBalance(final_credits))));
                     } else {
-                        p.sendMessage(Messages.mm(Messages.messageGetString("invalid_use_remove")));
+                        p.sendMessage(Messages.mm(Messages.messageGetString("player_not_found")));
                     }
                 } else {
                     p.sendMessage(Messages.mm(Messages.messageGetString("invalid_use_remove")));

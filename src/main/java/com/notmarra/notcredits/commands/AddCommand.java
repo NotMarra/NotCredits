@@ -1,8 +1,8 @@
-package me.notmarra.notcredits.commands;
+package com.notmarra.notcredits.commands;
 
-import me.notmarra.notcredits.data.Database;
-import me.notmarra.notcredits.utilities.Decimal;
-import me.notmarra.notcredits.utilities.Messages;
+import com.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.utilities.Decimal;
+import com.notmarra.notcredits.utilities.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -40,9 +40,9 @@ public class AddCommand {
                         Database.getInstance().setCreditsByUUID(player.getUniqueId().toString(), final_credits);
 
                         p.sendMessage(Messages.mm(Messages.messageReplaceMultiple(Messages.messageGetString("add_credits"), new String[]{"%amount%", "%player%"}, new String[]{Decimal.formatBalance(final_credits), playerName})));
-                        player.sendMessage(Messages.mm(Messages.messageReplace(Messages.messageGetString("credits_add"), "%amount%", Decimal.formatBalance(final_credits))));
+                        player.sendMessage(Messages.mm(Messages.messageReplace(Messages.messageGetString("credits_add"), "%amount%", Decimal.formatBalance(amount))));
                     } else {
-                        p.sendMessage(Messages.mm(Messages.messageGetString("invalid_use_add")));
+                        p.sendMessage(Messages.mm(Messages.messageGetString("player_not_found")));
                     }
                 } else {
                     p.sendMessage(Messages.mm(Messages.messageGetString("invalid_use_add")));

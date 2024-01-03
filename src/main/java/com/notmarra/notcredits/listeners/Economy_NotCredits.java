@@ -1,6 +1,6 @@
-package me.notmarra.notcredits.listeners;
+package com.notmarra.notcredits.listeners;
 
-import me.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.data.Database;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;

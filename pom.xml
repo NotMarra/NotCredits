@@ -5,7 +5,7 @@
 
     <groupId>com.notmarra</groupId>
     <artifactId>NotCredits</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>NotCredits</name>
@@ -44,7 +44,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>me.notmarra.notcredits</shadedPattern>
+                                    <shadedPattern>com.notmarra.notcredits</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

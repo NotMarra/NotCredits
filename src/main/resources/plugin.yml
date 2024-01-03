@@ -1,6 +1,6 @@
 name: NotCredits
-version: '1.0'
-main: me.notmarra.notcredits.Notcredits
+version: ${project.version}
+main: com.notmarra.notcredits.Notcredits
 api-version: 1.19
 authors: [ NotMarra ]
 description: Economy plugin
@@ -10,3 +10,4 @@ commands:
   credits:
     description: base command of plugin
     usage: /<command>
+    aliases: [nc, notcredits]

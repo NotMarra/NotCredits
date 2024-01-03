@@ -1,7 +1,7 @@
-package me.notmarra.notcredits.data;
+package com.notmarra.notcredits.data;
 
 import com.zaxxer.hikari.HikariDataSource;
-import me.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.Notcredits;
 
 import java.io.File;
 import java.sql.Connection;

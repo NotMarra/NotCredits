@@ -1,6 +1,6 @@
-package me.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.utilities;
 
-import me.notmarra.notcredits.commands.*;
+import com.notmarra.notcredits.commands.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

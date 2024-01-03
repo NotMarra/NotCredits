@@ -1,7 +1,7 @@
-package me.notmarra.notcredits.listeners;
+package com.notmarra.notcredits.listeners;
 
-import me.notmarra.notcredits.Notcredits;
-import me.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.Notcredits;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

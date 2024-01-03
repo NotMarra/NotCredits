@@ -1,4 +1,4 @@
-package me.notmarra.notcredits.data;
+package com.notmarra.notcredits.data;
 
 public class Account {
     private String playerName;

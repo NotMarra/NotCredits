@@ -1,8 +1,8 @@
-package me.notmarra.notcredits.commands;
+package com.notmarra.notcredits.commands;
 
-import me.notmarra.notcredits.data.Database;
-import me.notmarra.notcredits.utilities.Decimal;
-import me.notmarra.notcredits.utilities.Messages;
+import com.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.utilities.Decimal;
+import com.notmarra.notcredits.utilities.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

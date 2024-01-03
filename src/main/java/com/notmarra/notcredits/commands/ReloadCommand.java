@@ -1,7 +1,7 @@
-package me.notmarra.notcredits.commands;
+package com.notmarra.notcredits.commands;
 
-import me.notmarra.notcredits.Notcredits;
-import me.notmarra.notcredits.utilities.Messages;
+import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.utilities.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

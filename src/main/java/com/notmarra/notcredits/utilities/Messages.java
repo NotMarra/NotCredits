@@ -1,8 +1,10 @@
-package me.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.utilities;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class Messages {
     public static String messageGetString(String key) {
@@ -12,8 +14,8 @@ public class Messages {
         return finalMessage;
     }
 
-    public static String messageGetStringList(String key) {
-        String message = GetMessage.getStringList(key).toString();
+    public static List<String> messageGetStringList(String key) {
+        List<String> message = GetMessage.getStringList(key);
         return message;
     }
 
