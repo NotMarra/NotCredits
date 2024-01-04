@@ -18,13 +18,13 @@ public class CommandCreator implements CommandExecutor {
                     ReloadCommand.execute(sender);
                     break;
                 case "add":
-                    AddCommand.execute(sender, args);
+                    UniCommand.execute(sender, args, "add", "notcredits.add", "credits_add", "add_credits", "invalid_use_add");
                     break;
                 case "remove":
-                    RemoveCommand.execute(sender, args);
+                    UniCommand.execute(sender, args, "remove", "notcredits.remove", "credits_remove", "remove_credits", "invalid_use_remove");
                     break;
                 case "set":
-                    SetCommand.execute(sender, args);
+                    UniCommand.execute(sender, args, "set", "notcredits.set", "credits_set", "set_credits", "invalid_use_set");
                     break;
                 case "help":
                     HelpCommand.execute(sender);

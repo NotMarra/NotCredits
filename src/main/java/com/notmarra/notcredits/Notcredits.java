@@ -38,19 +38,19 @@ public final class Notcredits extends JavaPlugin {
       if (this.config.getBoolean("vault")) {
          if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             Bukkit.getServicesManager().register(Economy.class, new Economy_NotCredits(), this, ServicePriority.Normal);
-            Bukkit.getServer().getLogger().info("[NotCredits] Successfully connected to plugin vault!");
+            this.getLogger().info("Successfully connected to plugin vault!");
          } else {
-            this.getLogger().warning("[NotCredits] Vault is enabled in config, but Vault not found");
-            this.getLogger().warning("[NotCredits] Shutting down the plugin...");
+            this.getLogger().warning("Vault is enabled in config, but Vault not found");
+            this.getLogger().warning("Shutting down the plugin...");
             this.getServer().getPluginManager().disablePlugin(this);
          }
       }
 
       if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
          (new Placeholders()).register();
-         Bukkit.getServer().getLogger().info("[NotCredits] Successfully loaded placeholders!");
+         this.getLogger().info("Successfully loaded placeholders!");
       } else {
-         Bukkit.getServer().getLogger().info("[NotCredits] PlaceholderAPI not found, not loading placeholders!");
+         this.getLogger().info("PlaceholderAPI not found, not loading placeholders!");
       }
 
       Metrics metrics = new Metrics(this, 18464);
@@ -69,13 +69,13 @@ public final class Notcredits extends JavaPlugin {
       checkFilesAndUpdate("config.yml", "lang/en.yml", "lang/cz.yml");
 
 
-      Bukkit.getServer().getLogger().info("[NotCredits] Enabled successfully!");
+      this.getLogger().info("Enabled successfully!");
    }
    @Override
    public void onDisable() {
       Database.getInstance().disconnectFromDB();
 
-      Bukkit.getServer().getLogger().info("[NotCredits] Disabled successfully!");
+      this.getLogger().info("Disabled successfully!");
    }
 
    public static Notcredits getInstance() {

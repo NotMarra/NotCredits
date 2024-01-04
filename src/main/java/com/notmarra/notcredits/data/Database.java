@@ -102,6 +102,7 @@ public class Database {
         }
         return null;
     }
+
     public void addPlayerData(String uuid, String player_name, double balance) {
         String sql = "INSERT INTO " + this.table + " (uuid, player_name, balance) VALUES (?, ?, ?)";
 
@@ -117,7 +118,6 @@ public class Database {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     public double getCreditsByUUID(String uuid) {
         String sql = "SELECT balance FROM " + this.table + " WHERE uuid = ?";

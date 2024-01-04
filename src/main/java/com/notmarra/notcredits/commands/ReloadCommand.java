@@ -10,7 +10,7 @@ public class ReloadCommand {
     public static void execute(CommandSender sender) {
         if (sender instanceof Player) {
             Player p = (Player)sender;
-            if (!p.hasPermission("notcredits.reload") || !p.hasPermission("notcredits.*")) {
+            if (!p.hasPermission("notcredits.reload")) {
                 p.sendMessage(Messages.mm(Messages.messageGetString("no-perm")));
             } else {
                 Notcredits.getInstance().reload();
@@ -18,7 +18,6 @@ public class ReloadCommand {
             }
         } else {
             Notcredits.getInstance().reload();
-            Bukkit.getServer().getLogger().info("[NotCredits] Plugin has been successfully reloaded!");
         }
 
     }
