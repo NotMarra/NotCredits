@@ -57,6 +57,14 @@ public class Database {
         return database;
     }
 
+    public boolean isConnected() {
+        try {
+            return hikari.getConnection() != null && !hikari.getConnection().isClosed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public HikariDataSource getHikari() {
         return hikari;
     }

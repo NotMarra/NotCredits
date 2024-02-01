@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 
 public class ReloadCommand {
     public static void execute(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player p = (Player)sender;
+        if (sender instanceof Player p) {
             if (!p.hasPermission("notcredits.reload")) {
                 p.sendMessage(Messages.mm(Messages.messageGetString("no-perm")));
             } else {

@@ -12,8 +12,7 @@ import java.util.List;
 
 public class HelpCommand {
     public static void execute(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player p = (Player)sender;
+        if (sender instanceof Player p) {
             List<String> list = Messages.messageGetStringList("help");
 
             for (String line : list) {

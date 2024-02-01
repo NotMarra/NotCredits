@@ -35,6 +35,7 @@ public final class Notcredits extends JavaPlugin {
       Database.getInstance().Database();
       Database.getInstance().initializeTables();
 
+
       if (this.config.getBoolean("vault")) {
          if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             Bukkit.getServicesManager().register(Economy.class, new Economy_NotCredits(), this, ServicePriority.Normal);
@@ -68,12 +69,21 @@ public final class Notcredits extends JavaPlugin {
 
       checkFilesAndUpdate("config.yml", "lang/en.yml", "lang/cz.yml");
 
-
       this.getLogger().info("Enabled successfully!");
+
+      if (CheckVersion.isSpigot()) {
+         this.getLogger().warning("Your server is running on spigot!");
+         this.getLogger().warning("This plugin is not compatible with spigot!");
+         this.getLogger().warning("Please use PaperMC instead!");
+         this.getLogger().warning("Shutting down the plugin...");
+         this.getServer().getPluginManager().disablePlugin(this);
+      }
    }
    @Override
    public void onDisable() {
-      Database.getInstance().disconnectFromDB();
+      if (Database.getInstance().isConnected()) {
+            Database.getInstance().disconnectFromDB();
+      }
 
       this.getLogger().info("Disabled successfully!");
    }

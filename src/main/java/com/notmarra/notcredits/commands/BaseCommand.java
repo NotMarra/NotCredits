@@ -10,8 +10,7 @@ import org.bukkit.entity.Player;
 
 public class BaseCommand {
     public static void execute(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player p = (Player)sender;
+        if (sender instanceof Player p) {
             Bukkit.getScheduler().runTaskAsynchronously(Notcredits.getInstance(), new Runnable() {
                 @Override
                 public void run() {

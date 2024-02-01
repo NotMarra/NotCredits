@@ -14,9 +14,7 @@ public class UniCommand {
         String playerName;
         Player player;
 
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-
+        if (sender instanceof Player p) {
             if (!p.hasPermission(permission)) {
                 p.sendMessage(Messages.mm(Messages.messageGetString("no-perm")));
             } else {

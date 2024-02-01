@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.notmarra.notcredits.Notcredits;
 import com.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.utilities.Decimal;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
@@ -35,12 +36,7 @@ public class Placeholders extends PlaceholderExpansion {
 
                 credits = Database.getInstance().getCreditsByUUID(pname);
 
-            if (Notcredits.getInstance().getConfig().getBoolean("balance_decimal")) {
-                DecimalFormat decimalFormat = new DecimalFormat(Objects.requireNonNull(Notcredits.getInstance().getConfig().getString("balance_format")));
-                return String.valueOf(decimalFormat.format(credits));
-            } else {
-                return String.valueOf(Math.round(credits));
-            }
+            return Decimal.formatBalance(credits);
         } else {
             if (identifier.startsWith("top_")) {
                 String[] parts = identifier.split("_");

@@ -1,6 +1,7 @@
 package com.notmarra.notcredits.utilities;
 
 import com.notmarra.notcredits.Notcredits;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -24,24 +25,29 @@ public class Updater {
 
 
     public void checkForUpdates() {
-        String latestVersion = getLatestVersion();
-        if (latestVersion != null) {
-            if (currentVersion.contains("SNAPSHOT")) {
-                plugin.getLogger().warning("You are running on a snapshot build of " + pluginName + "!");
-            } else if (currentVersion.contains("DEV")){
-                plugin.getLogger().warning("You are running on a development build of " + pluginName + "!");
-            } else if (currentVersion.equals(latestVersion) || Double.parseDouble(currentVersion) > Double.parseDouble(latestVersion)) {
-                plugin.getLogger().info("You are running the latest version of " + pluginName + "!");
-            } else {
-                plugin.getLogger().warning("-----------------------------------------------------");
-                plugin.getLogger().warning("There is a new version of " + pluginName + " available!");
-                plugin.getLogger().warning("You are running on version v" + currentVersion + ", the latest version is v" + latestVersion + ".");
-                plugin.getLogger().warning("Download it from " + pluginURL);
-                plugin.getLogger().warning("-----------------------------------------------------");
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+                String latestVersion = getLatestVersion();
+                if (latestVersion != null) {
+                    if (currentVersion.contains("SNAPSHOT")) {
+                        plugin.getLogger().warning("You are running on a snapshot build of " + pluginName + "!");
+                    } else if (currentVersion.contains("DEV")){
+                        plugin.getLogger().warning("You are running on a development build of " + pluginName + "!");
+                    } else if (currentVersion.equals(latestVersion) || Double.parseDouble(currentVersion) > Double.parseDouble(latestVersion)) {
+                        plugin.getLogger().info("You are running the latest version of " + pluginName + "!");
+                    } else {
+                        plugin.getLogger().warning("-----------------------------------------------------");
+                        plugin.getLogger().warning("There is a new version of " + pluginName + " available!");
+                        plugin.getLogger().warning("You are running on version v" + currentVersion + ", the latest version is v" + latestVersion + ".");
+                        plugin.getLogger().warning("Download it from " + pluginURL);
+                        plugin.getLogger().warning("-----------------------------------------------------");
+                    }
+                } else {
+                    plugin.getLogger().warning("Failed to check for updates!");
+                }
             }
-        } else {
-            plugin.getLogger().warning("Failed to check for updates!");
-        }
+        });
     }
 
     private String getLatestVersion() {
@@ -101,8 +107,7 @@ public class Updater {
     private static void update(String fileName) {
         File file = new File(Notcredits.getInstance().getDataFolder().getAbsolutePath(), fileName);
         if (!file.exists()) {
-            file.getParentFile().mkdirs();
-            Notcredits.getInstance().saveResource(fileName, false);
+            Files.createFile(fileName);
         } else {
             try {
                 YamlConfiguration actualConfig = YamlConfiguration.loadConfiguration(file);
