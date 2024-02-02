@@ -30,7 +30,7 @@ public class UniCommand {
                             double credits;
                             double amount;
 
-                            if (final_playerName != null) {
+                            if (player != null) {
                                 try {
                                     amount = Double.parseDouble(args[2]);
                                 } catch (NumberFormatException e) {

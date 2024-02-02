@@ -25,29 +25,25 @@ public class Updater {
 
 
     public void checkForUpdates() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
-                String latestVersion = getLatestVersion();
-                if (latestVersion != null) {
-                    if (currentVersion.contains("SNAPSHOT")) {
-                        plugin.getLogger().warning("You are running on a snapshot build of " + pluginName + "!");
-                    } else if (currentVersion.contains("DEV")){
-                        plugin.getLogger().warning("You are running on a development build of " + pluginName + "!");
-                    } else if (currentVersion.equals(latestVersion) || Double.parseDouble(currentVersion) > Double.parseDouble(latestVersion)) {
-                        plugin.getLogger().info("You are running the latest version of " + pluginName + "!");
-                    } else {
-                        plugin.getLogger().warning("-----------------------------------------------------");
-                        plugin.getLogger().warning("There is a new version of " + pluginName + " available!");
-                        plugin.getLogger().warning("You are running on version v" + currentVersion + ", the latest version is v" + latestVersion + ".");
-                        plugin.getLogger().warning("Download it from " + pluginURL);
-                        plugin.getLogger().warning("-----------------------------------------------------");
-                    }
-                } else {
-                    plugin.getLogger().warning("Failed to check for updates!");
-                }
+
+        String latestVersion = getLatestVersion();
+        if (latestVersion != null) {
+            if (currentVersion.contains("SNAPSHOT")) {
+                plugin.getLogger().warning("You are running on a snapshot build of " + pluginName + "!");
+            } else if (currentVersion.contains("DEV")) {
+                plugin.getLogger().warning("You are running on a development build of " + pluginName + "!");
+            } else if (currentVersion.equals(latestVersion) || Double.parseDouble(currentVersion) > Double.parseDouble(latestVersion)) {
+                plugin.getLogger().info("You are running the latest version of " + pluginName + "!");
+            } else {
+                plugin.getLogger().warning("-----------------------------------------------------");
+                plugin.getLogger().warning("There is a new version of " + pluginName + " available!");
+                plugin.getLogger().warning("You are running on version v" + currentVersion + ", the latest version is v" + latestVersion + ".");
+                plugin.getLogger().warning("Download it from " + pluginURL);
+                plugin.getLogger().warning("-----------------------------------------------------");
             }
-        });
+        } else {
+            plugin.getLogger().warning("Failed to check for updates!");
+        }
     }
 
     private String getLatestVersion() {
