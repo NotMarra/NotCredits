@@ -22,13 +22,14 @@ public final class Notcredits extends JavaPlugin {
       this.updater = new Updater(this, this.getDescription().getVersion(), this.getDescription().getName(), "https://github.com/NotMarra/NotCredits/releases");
    }
 
-   public NotCredits NotCredits = new NotCredits();
+   public Credits Credits;
    @Override
    public void onEnable() {
       instance = this;
       this.config = this.getConfig();
       this.config.options().copyDefaults(true);
       this.saveDefaultConfig();
+      Credits = new Credits();
 
       CheckDBSettings checkDBSettings = new CheckDBSettings();
       checkDBSettings.CheckDBSettings();

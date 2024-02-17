@@ -4,7 +4,7 @@ import com.notmarra.notcredits.data.Database;
 
 import java.util.UUID;
 
-public class NotCredits {
+public class Credits {
     /*
         * Get the balance of a player
         * @param uuid The UUID of the player
