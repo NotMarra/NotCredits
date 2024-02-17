@@ -18,10 +18,11 @@ public final class Notcredits extends JavaPlugin {
    private static Notcredits instance;
    FileConfiguration config;
    Updater updater;
-
    public Notcredits() {
       this.updater = new Updater(this, this.getDescription().getVersion(), this.getDescription().getName(), "https://github.com/NotMarra/NotCredits/releases");
    }
+
+   public NotCredits NotCredits = new NotCredits();
    @Override
    public void onEnable() {
       instance = this;
@@ -78,6 +79,7 @@ public final class Notcredits extends JavaPlugin {
          this.getLogger().warning("Shutting down the plugin...");
          this.getServer().getPluginManager().disablePlugin(this);
       }
+
    }
    @Override
    public void onDisable() {
