@@ -43,8 +43,8 @@ public final class Notcredits extends JavaPlugin {
             Bukkit.getServicesManager().register(Economy.class, new Economy_NotCredits(), this, ServicePriority.Normal);
             this.getLogger().info("Successfully connected to plugin vault!");
          } else {
-            this.getLogger().warning("Vault is enabled in config, but Vault not found");
-            this.getLogger().warning("Shutting down the plugin...");
+            this.getLogger().severe("Vault is enabled in config, but Vault not found");
+            this.getLogger().severe("Shutting down the plugin...");
             this.getServer().getPluginManager().disablePlugin(this);
          }
       }
@@ -74,10 +74,10 @@ public final class Notcredits extends JavaPlugin {
       this.getLogger().info("Enabled successfully!");
 
       if (CheckVersion.isSpigot()) {
-         this.getLogger().warning("Your server is running on spigot!");
-         this.getLogger().warning("This plugin is not compatible with spigot!");
-         this.getLogger().warning("Please use PaperMC instead!");
-         this.getLogger().warning("Shutting down the plugin...");
+         this.getLogger().severe("Your server is running on spigot!");
+         this.getLogger().severe("This plugin is not compatible with spigot!");
+         this.getLogger().severe("Please use PaperMC instead!");
+         this.getLogger().severe("Shutting down the plugin...");
          this.getServer().getPluginManager().disablePlugin(this);
       }
 
