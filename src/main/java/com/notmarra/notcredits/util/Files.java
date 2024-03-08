@@ -1,4 +1,4 @@
-package com.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.util;
 
 import com.notmarra.notcredits.Notcredits;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,16 +9,16 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 public class Files {
-    public static void createFolder(String name) {
-        File folder = new File(Notcredits.getInstance().getDataFolder(), name);
-        if (!folder.exists()) {
-            try {
-                folder.mkdir();
-            } catch (Exception var3) {
-                var3.printStackTrace();
-            }
+    public static String getStringFromFile(String path, String string) {
+        File file = new File(path);
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+        if(yamlConfiguration.contains(string)) {
+            return yamlConfiguration.getString(string);
+        } else {
+            return null;
         }
     }
+
     public static void createFile(String name) {
         File file = new File(Notcredits.getInstance().getDataFolder().getAbsolutePath(), name);
         if (!file.exists()) {
@@ -35,4 +35,3 @@ public class Files {
         }
     }
 }
-
