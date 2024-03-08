@@ -1,32 +1,24 @@
 package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.Notcredits;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-
 public class Updater {
     private final Plugin plugin;
     private final String pluginName;
     private final String currentVersion;
     private final String pluginURL;
-    private final String configVersion;
-    private final String langVersion;
 
     public Updater(Plugin plugin, String pluginName, String currentVersion, String configVersion, String langVersion, String pluginURL) {
         this.plugin = plugin;
         this.pluginName = pluginName;
         this.currentVersion = currentVersion;
         this.pluginURL = pluginURL;
-        this.configVersion = configVersion;
-        this.langVersion = langVersion;
     }
     public void checkForUpdates() {
         String latestVersion = getLatestVersion();
@@ -94,56 +86,4 @@ public class Updater {
         return stringBuilder.toString();
     }
 
-    public void checkFilesAndUpdate(String... files) {
-        for (String fileName : files) {
-            if (fileName.equals("config.yml") && !Objects.equals(Notcredits.getInstance().getConfig().getString("ver"), Updater.this.configVersion)) {
-                update(fileName);
-                Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.configVersion);
-            } else if (!Objects.equals(Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver"), Updater.this.langVersion)) {
-                if (fileName.contains("lang/")) {
-                    update(fileName);
-                    Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.langVersion);
-                }
-            }
-        }
-    }
-
-    private static void update(String fileName) {
-        File file = new File(Notcredits.getInstance().getDataFolder().getAbsolutePath(), fileName);
-        if (!file.exists()) {
-            Files.createFile(fileName);
-        } else {
-            try {
-                YamlConfiguration actualConfig = YamlConfiguration.loadConfiguration(file);
-                InputStreamReader urlReader = getInputStreamReader(fileName);
-                YamlConfiguration gitConfig = YamlConfiguration.loadConfiguration(urlReader);
-
-                for (String key : gitConfig.getKeys(true)) {
-                    if (!actualConfig.contains(key)) {
-                        actualConfig.set(key, gitConfig.get(key));
-                    }
-                }
-
-                actualConfig.save(file);
-                urlReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    @NotNull
-    private static InputStreamReader getInputStreamReader(String fileName) throws IOException {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        URL url;
-
-        if (Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
-            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
-        } else {
-            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName.replace(".yml", "_nh.yml"));
-        }
-
-        return new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
-    }
 }

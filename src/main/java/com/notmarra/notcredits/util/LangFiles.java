@@ -1,23 +1,17 @@
 package com.notmarra.notcredits.util;
 
-import org.bukkit.Bukkit;
+import com.notmarra.notcredits.Notcredits;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-import static com.notmarra.notcredits.Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS;
-import static com.notmarra.notcredits.Notcredits.SUPPORTED_LANGUAGES;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 
 public class LangFiles {
+
     public static void createLang() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-
-        if (MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
-            for (String lang : SUPPORTED_LANGUAGES) {
-                Files.createFile("lang/" + lang + ".yml");
-            }
-        } else {
-            for (String lang : SUPPORTED_LANGUAGES) {
-                Files.createFileAs("lang/" + lang + "_nh.yml", "lang/" + lang + ".yml");
-            }
-        }
-
+        Files.createFile("lang/en.yml");
     }
 }
