@@ -8,34 +8,5 @@
 #Available lang files: en, cz
 lang: "en"
 
-data:
-  #Style how to save data
-  #Now it's only possible to use MySQL and SQLite only:
-  type: 'SQLite'
-  #What will be the name of the file with the saved data (only works with SQLite)
-  file: 'data.db'
-  #What will be the name of the table with the saved data (works on both)
-  table: 'NotCredits'
-
-  #If data type is set to MySQL, enter the login information from MySQL
-  mysql:
-    host: ''
-    port: 3306
-    username: ''
-    database: ''
-    password: ''
-
-
-# The default credits balance of a first-time joiner.
-default_balance: 0
-
-#Set true if you want decimal numbers
-balance_decimal: false
-
-#How the numbers will be formatted (#.## means the number will look like this 1.25)
-#Only works if "balance_decimal" is set to true
-balance_format: '#.##'
-
-#If this is set to true, the plugin will create a vault economy.
-#The Vault plugin is required on the server!
-vault: false
+#DO NOT CHANGE THIS
+ver: 1
