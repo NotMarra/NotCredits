@@ -10,8 +10,21 @@ lang: "en"
 
 data:
   #Set the type of the database
-  #Available types: sqlite, mysql, h2
-  type: "h2"
+  #Available types: SQLite, MySQL, H2
+  type: "H2"
+  #What will be the name of the file with the saved data (only works with SQLite)
+  file: "data"
+  #What will be the name of the table with the saved data (works on both)
+  table: 'NotCredits'
+
+  #If data type is set to MySQL, enter the login information from MySQL
+  mysql:
+    host: ''
+    port: 3306
+    username: ''
+    database: ''
+    password: ''
+
 
 #DO NOT CHANGE THIS
 ver: 1
