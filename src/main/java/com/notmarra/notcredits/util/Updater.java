@@ -1,24 +1,30 @@
 package com.notmarra.notcredits.util;
 
+import com.notmarra.notcredits.Notcredits;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
 public class Updater {
     private final Plugin plugin;
     private final String pluginName;
     private final String currentVersion;
     private final String pluginURL;
+    private final String configVersion;
+    private final String langVersion;
 
     public Updater(Plugin plugin, String pluginName, String currentVersion, String configVersion, String langVersion, String pluginURL) {
         this.plugin = plugin;
         this.pluginName = pluginName;
         this.currentVersion = currentVersion;
         this.pluginURL = pluginURL;
+        this.configVersion = configVersion;
+        this.langVersion = langVersion;
     }
     public void checkForUpdates() {
         String latestVersion = getLatestVersion();
@@ -86,4 +92,40 @@ public class Updater {
         return stringBuilder.toString();
     }
 
+    public void checkFilesAndUpdate(String... files) {
+        for (String fileName : files) {
+            if (fileName.equals("config.yml") && !Notcredits.getInstance().getConfig().getString("ver").equals(Updater.this.configVersion)) {
+                update(fileName);
+            } else if (fileName.contains("lang/") && !Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver").equals(Updater.this.langVersion)) {
+                update(fileName);
+            }
+        }
+    }
+
+    private static void update(String fileName) {
+        File file = new File(Notcredits.getInstance().getDataFolder().getAbsolutePath(), fileName);
+        if (!file.exists()) {
+            Files.createFile(fileName);
+        } else {
+            try {
+                YamlConfiguration actualConfig = YamlConfiguration.loadConfiguration(file);
+
+                URL url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
+                InputStreamReader urlReader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+                YamlConfiguration gitConfig = YamlConfiguration.loadConfiguration(urlReader);
+
+                for (String key : gitConfig.getKeys(true)) {
+                    if (!actualConfig.contains(key)) {
+                        actualConfig.set(key, gitConfig.get(key));
+                    }
+                }
+
+                actualConfig.save(file);
+                urlReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 }
