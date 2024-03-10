@@ -8,5 +8,10 @@
 #Available lang files: en, cz
 lang: "en"
 
+data:
+  #Set the type of the database
+  #Available types: sqlite, mysql, h2
+  type: "h2"
+
 #DO NOT CHANGE THIS
 ver: 1

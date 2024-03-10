@@ -1,13 +1,8 @@
 package com.notmarra.notcredits;
 
-import com.notmarra.notcredits.util.Files;
 import com.notmarra.notcredits.util.LangFiles;
 import com.notmarra.notcredits.util.Updater;
-import net.milkbowl.vault.economy.Economy;
-import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Notcredits extends JavaPlugin {
@@ -16,7 +11,7 @@ public final class Notcredits extends JavaPlugin {
    Updater updater;
 
    public Notcredits() {
-      this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), config.getString("ver"), Files.getStringFromFile("lang/en.yml", "ver"), "https://github.com/NotMarra/NotCredits/releases");
+      this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), "1", "1", "ver");
    }
 
    @Override
@@ -25,6 +20,7 @@ public final class Notcredits extends JavaPlugin {
       this.saveDefaultConfig();
 
       this.updater.checkForUpdates();
+      updater.checkFilesAndUpdate("config.yml", "lang/en.yml");
 
       //create lang files
       LangFiles.createLang();
