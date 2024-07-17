@@ -1,0 +1,45 @@
+#  NotCredits plugin
+#     By NotMarra
+#
+#   English Language
+
+prefix: "&b&lCredits &8» &f"
+
+# Messages
+
+help:
+    - "&8&m-----------------------------------------------"
+    - ""
+    - "&9/credits &7- Shows how many credits the player has."
+    - "&9/credits set {player} {amount} &7- Sets the player's credit count."
+    - "&9/credits add {player} {amount} &7- Adds credits to the player."
+    - "&9/credits remove {player} {amount} &7- Removes player credits."
+    - "&9/credits reload &7- Reload the plugin."
+    - ""
+    - "&8&m-----------------------------------------------"
+
+#player
+credits: "%prefix%You have &b%credits%&f credits."
+credits_set: "%prefix%Your credits have been set to &b%amount%&f!"
+credits_add: "%prefix%You have been given &b%amount%&f credits."
+credits_remove: "%prefix%A &b%amount%&f of credits have been removed."
+
+#admin
+invalid_operator: "%prefix%Invalid operator, use: /credits <set/add/remove> <player> <amount>!"
+invalid_use_set: "%prefix%Invalid use of command, use: /credits set <player> <amount>!"
+invalid_use_add: "%prefix%Invalid use of command, use: /credits add <player> <amount>!"
+invalid_use_remove: "%prefix%Invalid use of command, use: /credits remove <player> <amount>!"
+
+set_credits: "%prefix%You set &b%player%'s&f credits to &b%amount%&f!"
+add_credits: "%prefix%You added &b%amount%&f credits to &b%player%&f!"
+remove_credits: "%prefix%You have removed &b%amount%&f of credits from &b%player%&f."
+reload: "%prefix%Plugin has been successfully reloaded!"
+
+#errors
+not_number: "%prefix%Invalid amount."
+not_positive_number: "%prefix%Amount must be a positive number."
+player_not_found: "%prefix%Player not found."
+no_perm: "%prefix%You do not have sufficient permission to execute this command!"
+
+#DO NOT CHANGE THIS
+ver: 1

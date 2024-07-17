@@ -1,6 +1,7 @@
 package com.notmarra.notcredits.util;
 
 import com.notmarra.notcredits.Notcredits;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class Updater {
     private final Plugin plugin;
@@ -94,11 +96,12 @@ public class Updater {
 
     public void checkFilesAndUpdate(String... files) {
         for (String fileName : files) {
-            if (fileName.equals("config.yml") && !Notcredits.getInstance().getConfig().getString("ver").equals(Updater.this.configVersion)) {
+            if (fileName.equals("config.yml") && !Objects.equals(Notcredits.getInstance().getConfig().getString("ver"), Updater.this.configVersion)) {
                 update(fileName);
-            } else if (fileName.contains("lang/") && !Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver").equals(Updater.this.langVersion)) {
-                update(fileName);
-            }
+            } else if (!Objects.equals(Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver"), Updater.this.langVersion))
+                if (fileName.contains("lang/")) {
+                    update(fileName);
+                }
         }
     }
 
@@ -109,8 +112,15 @@ public class Updater {
         } else {
             try {
                 YamlConfiguration actualConfig = YamlConfiguration.loadConfiguration(file);
+                String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+                URL url;
 
-                URL url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
+                if (version.startsWith("v1_16") || version.startsWith("v1_17") || version.startsWith("v1_18") || version.startsWith("v1_19") || version.startsWith("v1_20") || version.startsWith("v1_21")) {
+                    url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
+                } else {
+                    url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName.replace(".yml", "_nh.yml"));
+                }
+
                 InputStreamReader urlReader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
                 YamlConfiguration gitConfig = YamlConfiguration.loadConfiguration(urlReader);
 
