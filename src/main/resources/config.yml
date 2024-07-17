@@ -25,6 +25,16 @@ data:
     database: ''
     password: ''
 
+# The default credits balance of a first-time joiner.
+default_balance: 0
+
+#Set true if you want decimal numbers
+balance_decimal: false
+
+#How the numbers will be formatted (#.## means the number will look like this: 1.25)
+#Only works if "balance_decimal" is set to true
+balance_format: '#.##'
+
 
 #DO NOT CHANGE THIS
 ver: 1

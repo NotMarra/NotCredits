@@ -3,24 +3,51 @@ package com.notmarra.notcredits.util;
 import com.notmarra.notcredits.Notcredits;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.h2.engine.Database;
 
+import java.io.File;
 import java.sql.*;
 
 public class DatabaseManager {
 
     private final String databaseType;
-    private final String host = Notcredits.getInstance().getConfig().getString("data.mysql.host");
-    private final String name = Notcredits.getInstance().getConfig().getString("data.mysql.database");
-    private final String user = Notcredits.getInstance().getConfig().getString("data.mysql.username");
-    private final String pass = Notcredits.getInstance().getConfig().getString("data.mysql.password");
-    int port = Notcredits.getInstance().getConfig().getInt("data.mysql.port");
-    private final String table = Notcredits.getInstance().getConfig().getString("data.table");
-    private final String fileName = Notcredits.getInstance().getConfig().getString("data.file");
+    private final String host;
+    private final String name;
+    private final String user;
+    private final String pass;
+    private final int port;
+    private final String table;
+    private final String fileName;
+    private static DatabaseManager instance;
+    private static HikariDataSource dataSource;
 
-    private HikariDataSource dataSource;
+    private DatabaseManager(Notcredits plugin) {
+        FileConfiguration config = plugin.getConfig();
+        this.databaseType = config.getString("data.type").toLowerCase();
+        this.host = config.getString("data.mysql.host");
+        this.name = config.getString("data.mysql.database");
+        this.user = config.getString("data.mysql.username");
+        this.pass = config.getString("data.mysql.password");
+        this.port = config.getInt("data.mysql.port");
+        this.table = config.getString("data.table");
+        this.fileName = config.getString("data.file");
+    }
 
-    public DatabaseManager() {
-        databaseType = Notcredits.getInstance().getConfig().getString("data.type").toLowerCase();
+    public static DatabaseManager getInstance(Notcredits plugin) {
+        if (instance == null) {
+            instance = new DatabaseManager(plugin);
+        }
+        return instance;
+    }
+
+    public void close() {
+        dataSource.close();
+    }
+
+
+    public boolean isConnected() {
+        return dataSource != null;
     }
 
     public void setupDB() {
@@ -39,17 +66,21 @@ public class DatabaseManager {
     }
 
     private void setupH2() {
-        HikariConfig config;
-        config = prepareConfig("jdbc:h2:file:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + fileName + "h2.db");
-
-        dataSource = new HikariDataSource(config);
-
-        setupTable();
+        try {
+            Class.forName("org.h2.Driver");
+            HikariConfig config = prepareConfig("jdbc:h2:file:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".h2");
+            dataSource = new HikariDataSource(config);
+            setupTable();
+        } catch (ClassNotFoundException e) {
+            Notcredits.getInstance().getLogger().severe("H2 Driver not found: " + e.getMessage());
+        } catch (Exception e) {
+            Notcredits.getInstance().getLogger().severe("Error setting up H2 database: " + e.getMessage());
+        }
     }
 
     private void setupSQLite() {
         HikariConfig config;
-        config = prepareConfig("jdbc:sqlite:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + fileName + ".db");
+        config = prepareConfig("jdbc:sqlite:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".db");
 
         dataSource = new HikariDataSource(config);
 
@@ -73,6 +104,7 @@ public class DatabaseManager {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setPoolName("NotCredits");
         return config;
     }
 
@@ -83,18 +115,6 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean isConnected() {
-        try {
-            return dataSource.getConnection() != null && !dataSource.getConnection().isClosed();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public void close() {
-        dataSource.close();
     }
 
     private void setSTMT(String sql, String... params) {
@@ -128,7 +148,7 @@ public class DatabaseManager {
     }
 
     public void setupPlayer(String uuid, String player_name, double balance) {
-        setSTMT("INSERT INTO " + table + " (uuid, player_name, balance) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE balance = ?", uuid, player_name, String.valueOf(balance), String.valueOf(balance));
+        setSTMT("INSERT INTO " + table + " (uuid, player_name, balance) VALUES (?, ?, ?)", uuid, player_name, String.valueOf(balance));
     }
 
     public void setBalance(String uuid, double balance) {
