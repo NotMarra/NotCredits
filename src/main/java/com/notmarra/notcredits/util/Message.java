@@ -9,28 +9,30 @@ import java.util.Map;
 
 public class Message {
 
+    static NMSMessageSender messageSender = new NMSMessageSender();
+
     public static String getMessage(String message) {
-        return LanguageManager.getMessage(message);
+        if (Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/lang/" + Notcredits.getInstance().getConfig().getString("lang") + ".yml", message) != null) {
+            return Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/lang/" + Notcredits.getInstance().getConfig().getString("lang") + ".yml", message);
+        } else {
+            return Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/lang/en.yml", message);
+        }
     }
 
     public static List<String> getMessageList(String message) {
-        return LanguageManager.getMessageList(message);
+        if (Files.getStringListFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/lang/" + Notcredits.getInstance().getConfig().getString("lang") + ".yml", message) != null) {
+            return Files.getStringListFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/lang/" + Notcredits.getInstance().getConfig().getString("lang") + ".yml", message);
+        } else {
+            return Files.getStringListFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/lang/en.yml", message);
+        }
     }
 
     public static String getPrefix() {
-        return LanguageManager.getMessage("prefix");
+        return Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/lang/" + Notcredits.getInstance().getConfig().getString("lang") + ".yml", "prefix");
     }
 
-    public static void sendMessage(Player player, String message_path, Boolean isConsole, Map<String, String> replacements) {
-        String message = getMessage(message_path);
-        transformText(player, isConsole, replacements, message);
-    }
 
-    public static void sendRawMessage(Player player, String message, Boolean isConsole, Map<String, String> replacements) {
-        transformText(player, isConsole, replacements, message);
-    }
-
-    private static void transformText(Player player, Boolean isConsole, Map<String, String> replacements, String message) {
+    public static void sendMessage(Player player, String message, Boolean isConsole, Map<String, String> replacements) {
         if (message.contains("%prefix%") && !isConsole) {
             message = message.replace("%prefix%", getPrefix());
         } else {
@@ -43,22 +45,11 @@ public class Message {
             }
         }
 
-        if (player != null && !isConsole) {
-            if (Notcredits.getInstance().nmsHandler != null) {
-                Notcredits.getInstance().nmsHandler.sendChatMessage(player, message);
-            } else {
-                player.sendMessage(message);
-            }
+        if (player != null) {
+            messageSender.sendChatMessage(player, message);
         }
         if (isConsole) {
-            message = stripFormatting(message);
             Bukkit.getLogger().info(message);
         }
-    }
-
-    private static String stripFormatting(String input) {
-        String withoutMiniMessage = input.replaceAll("<[^>]+>", "");
-
-        return withoutMiniMessage.replaceAll("§[0-9a-fk-or]", "");
     }
 }
