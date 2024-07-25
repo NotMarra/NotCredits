@@ -50,7 +50,7 @@ public final class Notcredits extends JavaPlugin {
       }
 
       if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-         (new Placeholders()).register();
+         (new Placeholders(this)).register();
          this.getLogger().info("Successfully loaded placeholders!");
       } else {
          this.getLogger().info("PlaceholderAPI not found, not loading placeholders!");

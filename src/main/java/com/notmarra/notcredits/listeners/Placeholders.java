@@ -1,7 +1,5 @@
 package com.notmarra.notcredits.listeners;
 
-import java.text.DecimalFormat;
-import java.util.Objects;
 
 import com.notmarra.notcredits.Notcredits;
 import com.notmarra.notcredits.data.Database;
@@ -10,6 +8,15 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
 public class Placeholders extends PlaceholderExpansion {
+    private final Notcredits plugin;
+
+    public Placeholders(Notcredits plugin) {
+        this.plugin = plugin;
+    }
+    @Override
+    public boolean persist() {
+        return true;
+    }
     public boolean canRegister() {
         return true;
     }
@@ -25,6 +32,7 @@ public class Placeholders extends PlaceholderExpansion {
     public String getVersion() {
         return Notcredits.getInstance().getDescription().getVersion();
     }
+
 
     public String onPlaceholderRequest(Player player, String identifier) {
         if (player == null) {
