@@ -42,15 +42,19 @@ public class Placeholders extends PlaceholderExpansion {
                 String[] parts = identifier.split("_");
                 int position;
                 if (parts.length == 2) {
-                    position = Integer.parseInt(parts[1]);
+                    position = Integer.parseInt(parts[1])-1;
 
                         if (Math.round(Database.getInstance().getCreditsByOrder(position)) == -1L) {
                             return "NaN";
                         }
                         return String.valueOf(Math.round(Database.getInstance().getCreditsByOrder(position)));
                 } else if (parts.length == 3 && parts[0].equals("top") && parts[1].equals("name")) {
-                    position = Integer.parseInt(parts[2]);
-                        return Database.getInstance().getPlayerByOrder(position);
+                    position = Integer.parseInt(parts[2])-1;
+                        if (Database.getInstance().getPlayerByOrder(position) == null) {
+                            return "NaN";
+                        } else {
+                            return Database.getInstance().getPlayerByOrder(position);
+                        }
                 }
             }
 

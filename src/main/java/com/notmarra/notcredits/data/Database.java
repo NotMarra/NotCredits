@@ -215,6 +215,7 @@ public class Database {
             }
             statement.close();
             connection.close();
+            return -1;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,6 +237,7 @@ public class Database {
             }
             statement.close();
             connection.close();
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
         }
