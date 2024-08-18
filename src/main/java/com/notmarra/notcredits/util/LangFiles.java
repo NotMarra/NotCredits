@@ -2,14 +2,21 @@ package com.notmarra.notcredits.util;
 
 import org.bukkit.Bukkit;
 
+import static com.notmarra.notcredits.Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS;
+import static com.notmarra.notcredits.Notcredits.SUPPORTED_LANGUAGES;
+
 public class LangFiles {
     public static void createLang() {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
-        if (version.startsWith("v1_16") || version.startsWith("v1_17") || version.startsWith("v1_18") || version.startsWith("v1_19") || version.startsWith("v1_20") || version.startsWith("v1_21")) {
-            Files.createFile("lang/en.yml");
+        if (MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
+            for (String lang : SUPPORTED_LANGUAGES) {
+                Files.createFile("lang/" + lang + ".yml");
+            }
         } else {
-            Files.createFileAs("lang/en_nh.yml", "lang/en.yml");
+            for (String lang : SUPPORTED_LANGUAGES) {
+                Files.createFileAs("lang/" + lang + "_nh.yml", "lang/" + lang + ".yml");
+            }
         }
 
     }

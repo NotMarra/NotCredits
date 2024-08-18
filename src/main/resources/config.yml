@@ -35,6 +35,10 @@ balance_decimal: false
 #Only works if "balance_decimal" is set to true
 balance_format: '#.##'
 
+#Set true if you want to use Vault
+vault: false
+
+placeholder_no_data: "NaN"
 
 #DO NOT CHANGE THIS
 ver: 1
