@@ -8,18 +8,17 @@ import java.util.List;
 
 public class HelpCommand {
     public static void execute(CommandSender sender) {
+        List<String> help = Message.getMessageList("help");
+
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            List<String> help = Message.getMessageList("help");
 
             for (String line : help) {
-                Message.sendMessage(p, line, false, null);
+                Message.sendRawMessage(p, line, false, null);
             }
         } else {
-            List<String> help = Message.getMessageList("help");
-
             for (String line : help) {
-                Message.sendMessage(null, line, true, null);
+                Message.sendRawMessage(null, line, true, null);
             }
         }
     }

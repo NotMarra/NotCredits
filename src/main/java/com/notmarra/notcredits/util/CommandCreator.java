@@ -7,7 +7,6 @@ import com.notmarra.notcredits.cmd.UniCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class CommandCreator implements CommandExecutor {
     @Override

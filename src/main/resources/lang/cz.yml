@@ -1,40 +1,42 @@
-#  NotCredits plugin
-#     By NotMarra
+# NotCredits plugin
+# Od NotMarra
 #
-#   Czech Language
-
+# Překlad v českém jazyce:
 prefix: "<gradient:#0077ff:#005ec9><b>Kredity</b></gradient> <dark_gray>»</dark_gray> <white>"
+
+# Zprávy pro nápovědu:
 help:
   - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
   - ""
-  - "<#0077ff><bold>/credits</bold></#0077ff><gray> - Ukáže, kolik má hráč kreditů..."
-  - "<#0077ff><bold>/credits set {hráč} {množství}</bold></#0077ff><gray> - Nastaví počet kreditů hráči."
+  - "<#0077ff><bold>/credits</bold></#0077ff><gray> - Zobrazí, kolik kreditů hráč má."
+  - "<#0077ff><bold>/credits set {hráč} {množství}</bold></#0077ff><gray> - Nastaví počet kreditů hráče."
   - "<#0077ff><bold>/credits add {hráč} {množství}</bold></#0077ff><gray> - Přidá hráči kredity."
-  - "<#0077ff><bold>/credits remove {hráč} {množství}</bold></#0077ff><gray> - Odebere kredity hráči."
-  - "<#0077ff><bold>/credits reload</bold></#0077ff><gray> - Opětovné načtení pluginu."
+  - "<#0077ff><bold>/credits remove {hráč} {množství}</bold></#0077ff><gray> - Odebere hráči kredity."
+  - "<#0077ff><bold>/credits reload</bold></#0077ff><gray> - Znovu načte plugin."
   - ""
   - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
 
-#player commands
-credits: "Nyní máš <#005ec9><b>%credits%</b></#005ec9><white> kreditů."
-credits_set: "Kredity ti byly nastaveny na <#005ec9><b>%amount%</b></#005ec9><white>!"
-credits_add: "Bylo ti přídáno <#005ec9><b>%amount%</b></#005ec9><white> kreditů!"
-credits_remove: "Bylo ti odebráno <#005ec9><b>%amount%</b></#005ec9><white> kreditů!"
+# Kredity hráče:
+credits: "%prefix%Máte <#005ec9><b>%credits%</b></#005ec9><white> kreditů."
+credits_set: "%prefix%Vaše kredity byly nastaveny na <#005ec9><b>%amount%</b></#005ec9><white>!"
+credits_add: "%prefix%Bylo vám přidáno <#005ec9><b>%amount%</b></#005ec9><white> kreditů."
+credits_remove: "%prefix%Bylo vám odebráno <#005ec9><b>%amount%</b></#005ec9><white> kreditů."
 
-#admin commands
-invalid_use_set: "Neplatné použití příkazu, použij: /credits set <hráč> <množství>!"
-invalid_use_add: "Neplatné použití příkazu, použij: /credits add <hráč> <množství>!"
-invalid_use_remove: "Neplatné použití příkazu, použij: /credits remove <hráč> <množství>!"
+# Admin
+invalid_operator: "%prefix%Neplatný operátor, použijte: /credits <add/set/remove> <hráč> <množství>!"
+invalid_use_set: "%prefix%Neplatné použití příkazu, použijte: /credits set <hráč> <množství>!"
+invalid_use_add: "%prefix%Neplatné použití příkazu, použijte: /credits add <hráč> <množství>!"
+invalid_use_remove: "%prefix%Neplatné použití příkazu, použijte: /credits remove <hráč> <množství>!"
+set_credits: "%prefix%Nastavili jste kredity hráče <#005ec9><b>%player%</b></#005ec9><white> na <#005ec9><b>%amount%</b></#005ec9><white>!"
+add_credits: "%prefix%Přidali jste <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>!"
+remove_credits: "%prefix%Odebrali jste <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>."
+reload: "%prefix%Plugin byl úspěšně znovu načten!"
 
-set_credits: "Nastavil jsi hráči <#005ec9><b>%player%</b></#005ec9><white> kredity na <#005ec9><b>%amount%</b></#005ec9><white>!"
-add_credits: "Přidal jsi <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>!"
-remove_credits: "Odebrali jste <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>."
-reload: "Plugin byl úspěšně přenačten!"
+# Chyby
+not_number: "%prefix%Neplatné množství."
+not_positive_number: "%prefix%Množství musí být kladné číslo."
+player_not_found: "%prefix%Hráč nebyl nalezen."
+no_perm: "%prefix%Nemáte dostatečná oprávnění k provedení tohoto příkazu!"
 
-#errors
-fetch_player_err: "Při načítání kreditů hráče došlo k chybě."
-not_number: "Neplatná částka."
-not_positive_number: "Částka musí být kladné číslo."
-negative_result: "Výsledek musí být větší nebo roven nule."
-player_not_found: "Hráč nebyl nalezen."
-no_perm: "Nemáte dostatečné oprávnění k provedení tohoto příkazu!"
+# NEMĚŇTE TOTO
+ver: 1
