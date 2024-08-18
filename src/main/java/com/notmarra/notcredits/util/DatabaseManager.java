@@ -4,10 +4,13 @@ import com.notmarra.notcredits.Notcredits;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.h2.engine.Database;
 
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DatabaseManager {
 
@@ -117,11 +120,11 @@ public class DatabaseManager {
         }
     }
 
-    private void setSTMT(String sql, String... params) {
+    private void setSTMT(String sql, Object... params) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             for (int i = 0; i < params.length; i++) {
-                stmt.setString(i + 1, params[i]);
+                stmt.setObject(i + 1, params[i]);
             }
             stmt.execute();
         } catch (SQLException e) {
@@ -129,41 +132,96 @@ public class DatabaseManager {
         }
     }
 
-    private String getSTMT(String sql, String... params) {
-        if (sql == null || sql.isEmpty() || params == null || params.length == 0) return null;
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+    private List<Map<String, String>> getSTMT(String sql, Object... params) {
+        if (sql == null || sql.isEmpty() || params == null) return null;
+        List<Map<String, String>> resultList = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
             for (int i = 0; i < params.length; i++) {
-                stmt.setString(i + 1, params[i]);
+                stmt.setObject(i + 1, params[i]);
             }
-            stmt.execute();
-            ResultSet result = stmt.getResultSet();
-            if (result != null && result.next()) {
-                return result.getString(1);
+
+            try (ResultSet result = stmt.executeQuery()) {
+                ResultSetMetaData metaData = result.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                while (result.next()) {
+                    Map<String, String> row = new HashMap<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        String value = result.getString(i);
+                        row.put(columnName, value);
+                    }
+                    resultList.add(row);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        return resultList.isEmpty() ? null : resultList;
+    }
+
+    private String getSTMTSingle(String sql, Object... params) {
+        List<Map<String, String>> result = getSTMT(sql, params);
+        if (result != null && !result.isEmpty()) {
+            Map<String, String> firstRow = result.get(0);
+            if (!firstRow.isEmpty()) {
+                return firstRow.values().iterator().next();
+            }
         }
         return null;
     }
-
     public void setupPlayer(String uuid, String player_name, double balance) {
-        setSTMT("INSERT INTO " + table + " (uuid, player_name, balance) VALUES (?, ?, ?)", uuid, player_name, String.valueOf(balance));
+        setSTMT("INSERT INTO " + table + " (uuid, player_name, balance) VALUES (?, ?, ?)", uuid, player_name, balance);
     }
 
     public void setBalance(String uuid, double balance) {
-        setSTMT("UPDATE " + table + " SET balance = ? WHERE uuid = ?", String.valueOf(balance), uuid);
+        setSTMT("UPDATE " + table + " SET balance = ? WHERE uuid = ?", balance, uuid);
     }
 
     public double getBalance(String uuid) {
-        return Double.parseDouble(getSTMT("SELECT balance FROM " + table + " WHERE uuid = ?", uuid));
-    }
-
-    public String getPlayerName(String uuid) {
-        return getSTMT("SELECT player_name FROM " + table + " WHERE uuid = ?", uuid);
+        String balance = getSTMTSingle("SELECT balance FROM " + table + " WHERE uuid = ?", uuid);
+        return balance != null ? Double.parseDouble(balance) : 0.0;
     }
 
     public boolean hasAccount(String uuid) {
         return getSTMT("SELECT uuid FROM " + table + " WHERE uuid = ?", uuid) != null;
     }
+
+    public void setBalanceByPlayerName(String name, double balance) {
+        setSTMT("UPDATE " + table + " SET balance = ? WHERE player_name = ?", balance, name);
+    }
+
+    public double getBalanceByPlayerName(String name) {
+        String balance = getSTMTSingle("SELECT balance FROM " + table + " WHERE player_name = ?", name);
+        return balance != null ? Double.parseDouble(balance) : 0.0;
+    }
+
+    public double getBalanceByOrder(int position) {
+        String balance = getSTMTSingle("SELECT balance FROM " + table + " ORDER BY balance DESC LIMIT 1 OFFSET ?", position);
+        return balance != null ? Double.parseDouble(balance) : -1.0;
+    }
+
+    public String getPlayerByBalance(int position) {
+        return getSTMTSingle("SELECT player_name FROM " + table + " ORDER BY balance DESC LIMIT 1 OFFSET ?", position);
+    }
+
+    public List<Map<String, Double>> getPlayersByBalance(int position, int amount) {
+        List<Map<String, String>> result = getSTMT("SELECT player_name, balance FROM " + table + " ORDER BY balance DESC LIMIT ? OFFSET ?", amount, position);
+        if (result == null) return null;
+
+        List<Map<String, Double>> resultList = new ArrayList<>();
+        for (Map<String, String> row : result) {
+            Map<String, Double> newRow = new HashMap<>();
+            for (Map.Entry<String, String> entry : row.entrySet()) {
+                newRow.put(entry.getKey(), Double.parseDouble(entry.getValue()));
+            }
+            resultList.add(newRow);
+        }
+        return resultList;
+    }
 }
+

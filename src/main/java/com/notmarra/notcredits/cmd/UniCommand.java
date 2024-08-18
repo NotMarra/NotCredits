@@ -13,111 +13,66 @@ import java.util.Map;
 
 public class UniCommand {
     public static void execute(CommandSender sender, String [] args, String operator, String permission, String message_player, String message_admin, String message_invalid) {
+        Boolean isConsole;
+        Player p;
+        if (sender instanceof Player) {
+            p = (Player) sender;
+            isConsole = false;
+        } else {
+            p = null;
+            isConsole = true;
+        }
 
-        if (sender instanceof Player ) {
-            Player p = (Player) sender;
-            if (!p.hasPermission(permission)) {
-                Message.sendMessage(p, "no_perm", false, null);
-            } else {
-                if (args.length == 3) {
-                    Player player = Bukkit.getPlayer(args[1]);
-
-                    Bukkit.getScheduler().runTaskAsynchronously(Notcredits.getInstance(), () -> {
-                        double credits;
-                        double amount;
-                        if (player != null) {
-                            try {
-                                 amount = Double.parseDouble(args[2]);
-                            } catch (NumberFormatException e) {
-                                Message.sendMessage(p, "not_number", false, null);
-                                return;
-                            }
-                            if (amount < 0) {
-                                Message.sendMessage(p, "not_positive_number", false, null);
-                                return;
-                            }
-
-                            switch (operator) {
-                                case "add":
-                                    credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(player.getUniqueId().toString());
-                                    credits += amount;
-                                    DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(player.getUniqueId().toString(), credits);
-                                    break;
-                                case "remove":
-                                    credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(player.getUniqueId().toString());
-                                    credits -= amount;
-                                    DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(player.getUniqueId().toString(), credits);
-                                    break;
-                                case "set":
-                                    DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(player.getUniqueId().toString(), amount);
-                                    break;
-                                default:
-                                    Message.sendMessage(p, "invalid_operator", false, null);
-                                    break;
-                            }
-                            Map<String, String> replacements = new HashMap<>();
-                            replacements.put("amount", Decimal.formatBalance(amount));
-                            replacements.put("player", player.getName());
-                            Message.sendMessage(p, message_admin, false, replacements);
-                            replacements.remove("player");
-                            Message.sendMessage(player, message_player, false, replacements);
-                        } else {
-                            Message.sendMessage(p, "player_not_found", false, null);
-                        }
-                    });
-                } else {
-                    Message.sendMessage(p, message_invalid, false, null);
-                }
-            }
+        if (!p.hasPermission(permission) && !isConsole) {
+            Message.sendMessage(p, "no_perm", false, null);
         } else {
             if (args.length == 3) {
                 Player player = Bukkit.getPlayer(args[1]);
 
                 Bukkit.getScheduler().runTaskAsynchronously(Notcredits.getInstance(), () -> {
-                    double credits;
                     double amount;
                     if (player != null) {
                         try {
                             amount = Double.parseDouble(args[2]);
                         } catch (NumberFormatException e) {
-                            Message.sendMessage(null, "not_number", true, null);
+                            Message.sendMessage(p, "not_number", isConsole, null);
                             return;
                         }
                         if (amount < 0) {
-                            Message.sendMessage(null, "not_positive_number", true, null);
+                            Message.sendMessage(p, "not_positive_number", isConsole, null);
                             return;
                         }
+                        double credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(player.getUniqueId().toString());
 
                         switch (operator) {
                             case "add":
-                                credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(player.getUniqueId().toString());
                                 credits += amount;
-                                DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(player.getUniqueId().toString(), credits);
                                 break;
                             case "remove":
-                                credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(player.getUniqueId().toString());
                                 credits -= amount;
-                                DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(player.getUniqueId().toString(), credits);
                                 break;
                             case "set":
-                                DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(player.getUniqueId().toString(), amount);
+                                credits = amount;
                                 break;
                             default:
-                                Message.sendMessage(null, "invalid_operator", true, null);
+                                Message.sendMessage(p, "invalid_operator", isConsole, null);
                                 break;
                         }
+
+                        DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(player.getUniqueId().toString(), credits);
+
                         Map<String, String> replacements = new HashMap<>();
                         replacements.put("amount", Decimal.formatBalance(amount));
                         replacements.put("player", player.getName());
-                        Message.sendMessage(null, message_admin, true, replacements);
+                        Message.sendMessage(p, message_admin, isConsole, replacements);
                         replacements.remove("player");
-                        Message.sendMessage(player, message_player, false, replacements);
+                        Message.sendMessage(player, message_player, isConsole, replacements);
                     } else {
-                        Message.sendMessage(null, "player_not_found", true, null);
+                        Message.sendMessage(p, "player_not_found", isConsole, null);
                     }
                 });
             } else {
-                Message.sendMessage(null, message_invalid, true, null);
+                Message.sendMessage(p, message_invalid, isConsole, null);
             }
         }
     }

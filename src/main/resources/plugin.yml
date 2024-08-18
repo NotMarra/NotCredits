@@ -8,6 +8,6 @@ website: www.notmarra.com
 softdepend: [PlaceholderAPI, Vault]
 commands:
   credits:
-    description: base command of plugin
+    description: Base command for NotCredits
     usage: /<command>
     aliases: [nc, notcredits]

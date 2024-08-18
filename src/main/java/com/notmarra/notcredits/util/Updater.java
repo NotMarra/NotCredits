@@ -98,10 +98,13 @@ public class Updater {
         for (String fileName : files) {
             if (fileName.equals("config.yml") && !Objects.equals(Notcredits.getInstance().getConfig().getString("ver"), Updater.this.configVersion)) {
                 update(fileName);
-            } else if (!Objects.equals(Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver"), Updater.this.langVersion))
+                Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.configVersion);
+            } else if (!Objects.equals(Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver"), Updater.this.langVersion)) {
                 if (fileName.contains("lang/")) {
                     update(fileName);
+                    Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.langVersion);
                 }
+            }
         }
     }
 
@@ -112,16 +115,7 @@ public class Updater {
         } else {
             try {
                 YamlConfiguration actualConfig = YamlConfiguration.loadConfiguration(file);
-                String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-                URL url;
-
-                if (version.startsWith("v1_16") || version.startsWith("v1_17") || version.startsWith("v1_18") || version.startsWith("v1_19") || version.startsWith("v1_20") || version.startsWith("v1_21")) {
-                    url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
-                } else {
-                    url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName.replace(".yml", "_nh.yml"));
-                }
-
-                InputStreamReader urlReader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+                InputStreamReader urlReader = getInputStreamReader(fileName);
                 YamlConfiguration gitConfig = YamlConfiguration.loadConfiguration(urlReader);
 
                 for (String key : gitConfig.getKeys(true)) {
@@ -137,5 +131,19 @@ public class Updater {
             }
 
         }
+    }
+
+    @NotNull
+    private static InputStreamReader getInputStreamReader(String fileName) throws IOException {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        URL url;
+
+        if (Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
+            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
+        } else {
+            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName.replace(".yml", "_nh.yml"));
+        }
+
+        return new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
     }
 }
