@@ -1,31 +1,34 @@
-package com.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.util;
 
 import com.notmarra.notcredits.Notcredits;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class Updater {
     private final Plugin plugin;
-    private final String currentVersion;
     private final String pluginName;
+    private final String currentVersion;
     private final String pluginURL;
+    private final String configVersion;
+    private final String langVersion;
 
-    public Updater(Plugin plugin, String currentVersion, String pluginName, String pluginURL) {
+    public Updater(Plugin plugin, String pluginName, String currentVersion, String configVersion, String langVersion, String pluginURL) {
         this.plugin = plugin;
-        this.currentVersion = currentVersion;
         this.pluginName = pluginName;
+        this.currentVersion = currentVersion;
         this.pluginURL = pluginURL;
+        this.configVersion = configVersion;
+        this.langVersion = langVersion;
     }
-
-
     public void checkForUpdates() {
-
         String latestVersion = getLatestVersion();
         if (latestVersion != null) {
             if (currentVersion.contains("SNAPSHOT")) {
@@ -47,38 +50,20 @@ public class Updater {
     }
 
     private String getLatestVersion() {
-        String url = "https://api.github.com/repos/NotMarra/NotCredits/releases/latest";
-
         if (currentVersion.contains("SNAPSHOT") || currentVersion.contains("DEV")) {
             return currentVersion;
         } else {
-            String version = getResponse(url);
-            if (version != null) {
-                return version;
-            }
+            return getResponse();
         }
-
-        return null;
     }
 
-    private String getResponse(String url) {
+    private String getResponse() {
         try {
-            String realUrl = url;
-            HttpURLConnection connection = (HttpURLConnection) new URL(realUrl).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("https://api.github.com/repos/NotMarra/NotCredits/releases/latest").openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
-            InputStream inputStream = connection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new java.io.InputStreamReader(inputStream));
-            StringBuilder stringBuilder = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append("\n");
-            }
-            bufferedReader.close();
-            inputStream.close();
-            String response = stringBuilder.toString();
+            String response = getStringFromURL(connection);
             if (response.contains("\"message\":\"Not Found\"")) {
                 return null;
             }
@@ -94,9 +79,32 @@ public class Updater {
         return null;
     }
 
-    public static void checkFilesAndUpdate(String... fileNames) {
-        for (String fileName : fileNames) {
-            update(fileName);
+    @NotNull
+    private static String getStringFromURL(HttpURLConnection connection) throws IOException {
+        InputStream inputStream = connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new java.io.InputStreamReader(inputStream));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+            stringBuilder.append("\n");
+        }
+        bufferedReader.close();
+        inputStream.close();
+        return stringBuilder.toString();
+    }
+
+    public void checkFilesAndUpdate(String... files) {
+        for (String fileName : files) {
+            if (fileName.equals("config.yml") && !Objects.equals(Notcredits.getInstance().getConfig().getString("ver"), Updater.this.configVersion)) {
+                update(fileName);
+                Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.configVersion);
+            } else if (!Objects.equals(Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver"), Updater.this.langVersion)) {
+                if (fileName.contains("lang/")) {
+                    update(fileName);
+                    Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.langVersion);
+                }
+            }
         }
     }
 
@@ -107,9 +115,7 @@ public class Updater {
         } else {
             try {
                 YamlConfiguration actualConfig = YamlConfiguration.loadConfiguration(file);
-
-                URL url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
-                InputStreamReader urlReader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+                InputStreamReader urlReader = getInputStreamReader(fileName);
                 YamlConfiguration gitConfig = YamlConfiguration.loadConfiguration(urlReader);
 
                 for (String key : gitConfig.getKeys(true)) {
@@ -125,5 +131,19 @@ public class Updater {
             }
 
         }
+    }
+
+    @NotNull
+    private static InputStreamReader getInputStreamReader(String fileName) throws IOException {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        URL url;
+
+        if (Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
+            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
+        } else {
+            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName.replace(".yml", "_nh.yml"));
+        }
+
+        return new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
     }
 }

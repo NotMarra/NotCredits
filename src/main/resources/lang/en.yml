@@ -4,6 +4,9 @@
 #   English Language
 
 prefix: "<gradient:#0077ff:#005ec9><b>Credits</b></gradient> <dark_gray>»</dark_gray> <white>"
+
+# Messages
+
 help:
   - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
   - ""
@@ -15,26 +18,28 @@ help:
   - ""
   - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
 
-#player commands
-credits: "You have <#005ec9><b>%credits%</b></#005ec9><white> credits."
-credits_set: "Your credits have been set to <#005ec9><b>%amount%</b></#005ec9><white>!"
-credits_add: "You have been given <#005ec9><b>%amount%</b></#005ec9><white> credits."
-credits_remove: "A <#005ec9><b>%amount%</b></#005ec9><white> of credits have been removed."
+#player
+credits: "%prefix%You have <#005ec9><b>%credits%</b></#005ec9><white> credits."
+credits_set: "%prefix%Your credits have been set to <#005ec9><b>%amount%</b></#005ec9><white>!"
+credits_add: "%prefix%You have been given <#005ec9><b>%amount%</b></#005ec9><white> credits."
+credits_remove: "%prefix%A <#005ec9><b>%amount%</b></#005ec9><white> of credits have been removed."
 
-#admin commands
-invalid_use_set: "Invalid use of command, use: /credits set <player> <amount>!"
-invalid_use_add: "Invalid use of command, use: /credits add <player> <amount>!"
-invalid_use_remove: "Invalid use of command, use: /credits remove <player> <amount>!"
+#admin
+invalid_operator: "%prefix%Invalid operator, use: /credits <set/add/remove> <player> <amount>!"
+invalid_use_set: "%prefix%Invalid use of command, use: /credits set <player> <amount>!"
+invalid_use_add: "%prefix%Invalid use of command, use: /credits add <player> <amount>!"
+invalid_use_remove: "%prefix%Invalid use of command, use: /credits remove <player> <amount>!"
 
-set_credits: "You set <#005ec9><b>%player%'s</b></#005ec9><white> credits to <#005ec9><b>%amount%</b></#005ec9><white>!"
-add_credits: "You added <#005ec9><b>%amount%</b></#005ec9><white> credits to <#005ec9><b>%player%</b></#005ec9><white>!"
-remove_credits: "You have removed <#005ec9><b>%amount%</b></#005ec9><white> of credits from <#005ec9><b>%player%</b></#005ec9><white>."
-reload: "Plugin has been successfully reloaded!"
+set_credits: "%prefix%You set <#005ec9><b>%player%'s</b></#005ec9><white> credits to <#005ec9><b>%amount%</b></#005ec9><white>!"
+add_credits: "%prefix%You added <#005ec9><b>%amount%</b></#005ec9><white> credits to <#005ec9><b>%player%</b></#005ec9><white>!"
+remove_credits: "%prefix%You have removed <#005ec9><b>%amount%</b></#005ec9><white> of credits from <#005ec9><b>%player%</b></#005ec9><white>."
+reload: "%prefix%Plugin has been successfully reloaded!"
 
 #errors
-fetch_player_err: "An error occurred while fetching player's credits."
-not_number: "Invalid amount."
-not_positive_number: "Amount must be a positive number."
-negative_result: "The result must be greater than or equal to zero."
-player_not_found: "Player not found."
-no_perm: "You do not have sufficient permission to execute this command!"
+not_number: "%prefix%Invalid amount."
+not_positive_number: "%prefix%Amount must be a positive number."
+player_not_found: "%prefix%Player not found."
+no_perm: "%prefix%You do not have sufficient permission to execute this command!"
+
+#DO NOT CHANGE THIS
+ver: 1

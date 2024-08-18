@@ -1,6 +1,7 @@
-package com.notmarra.notcredits.listeners;
+package com.notmarra.notcredits.events;
 
-import com.notmarra.notcredits.data.Database;
+import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.util.DatabaseManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
@@ -39,7 +40,7 @@ public class Economy_NotCredits implements Economy {
     }
 
     public double getBalance(OfflinePlayer player) {
-        return player != null && player.getPlayer() != null ? Database.getInstance().getCreditsByPlayerName(player.getName()) : 0.0D;
+        return player != null && player.getPlayer() != null ? DatabaseManager.getInstance(Notcredits.getInstance()).getBalanceByPlayerName(player.getName()) : 0.0D;
     }
 
     public double getBalance(String name, String world) {
@@ -78,11 +79,11 @@ public class Economy_NotCredits implements Economy {
             if (amount == 0.0D) {
                 return new EconomyResponse(amount, balance, ResponseType.SUCCESS, "");
             } else if (balance < amount) {
-                return new EconomyResponse(amount, balance, ResponseType.FAILURE, "Not enough tokens");
+                return new EconomyResponse(amount, balance, ResponseType.FAILURE, "Not enough credits");
             } else {
                 balance -= amount;
 
-                Database.getInstance().setCreditsByPlayerName(player.getName(), balance);
+                DatabaseManager.getInstance(Notcredits.getInstance()).setBalanceByPlayerName(player.getName(), balance);
 
                 return new EconomyResponse(amount, balance, ResponseType.SUCCESS, "");
             }
@@ -111,7 +112,7 @@ public class Economy_NotCredits implements Economy {
             } else {
                 balance += amount;
 
-                Database.getInstance().setCreditsByPlayerName(player.getName(), balance);
+                DatabaseManager.getInstance(Notcredits.getInstance()).setBalanceByPlayerName(player.getName(), balance);
 
                 return new EconomyResponse(amount, balance, ResponseType.SUCCESS, "");
             }

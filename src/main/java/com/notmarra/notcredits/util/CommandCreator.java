@@ -1,11 +1,16 @@
-package com.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.commands.*;
+import com.notmarra.notcredits.cmd.BaseCommand;
+import com.notmarra.notcredits.cmd.HelpCommand;
+import com.notmarra.notcredits.cmd.ReloadCommand;
+import com.notmarra.notcredits.cmd.UniCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class CommandCreator implements CommandExecutor {
+    @Override
+
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             BaseCommand.execute(sender);
@@ -36,4 +41,5 @@ public class CommandCreator implements CommandExecutor {
         }
         return true;
     }
+
 }

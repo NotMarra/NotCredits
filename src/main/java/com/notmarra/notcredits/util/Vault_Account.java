@@ -1,10 +1,10 @@
-package com.notmarra.notcredits.data;
+package com.notmarra.notcredits.util;
 
-public class Account {
+public class Vault_Account {
     private String playerName;
     private double balance;
 
-    public Account(String playerName, double balance) {
+    public Vault_Account(String playerName, double balance) {
         this.playerName = playerName;
         this.balance = balance;
     }

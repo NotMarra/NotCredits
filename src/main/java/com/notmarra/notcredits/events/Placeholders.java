@@ -1,9 +1,8 @@
-package com.notmarra.notcredits.listeners;
-
+package com.notmarra.notcredits.events;
 
 import com.notmarra.notcredits.Notcredits;
-import com.notmarra.notcredits.data.Database;
-import com.notmarra.notcredits.utilities.Decimal;
+import com.notmarra.notcredits.util.DatabaseManager;
+import com.notmarra.notcredits.util.Decimal;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
@@ -42,7 +41,7 @@ public class Placeholders extends PlaceholderExpansion {
             double credits = 0.0D;
 
 
-                credits = Database.getInstance().getCreditsByUUID(pname);
+            credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(pname);
 
             return Decimal.formatBalance(credits);
         } else {
@@ -52,17 +51,17 @@ public class Placeholders extends PlaceholderExpansion {
                 if (parts.length == 2) {
                     position = Integer.parseInt(parts[1])-1;
 
-                        if (Math.round(Database.getInstance().getCreditsByOrder(position)) == -1L) {
-                            return "NaN";
-                        }
-                        return String.valueOf(Math.round(Database.getInstance().getCreditsByOrder(position)));
+                    if (Math.round(DatabaseManager.getInstance(Notcredits.getInstance()).getBalanceByOrder(position)) == -1L) {
+                        return Notcredits.getInstance().getConfig().getString("placeholder_no_data");
+                    }
+                    return String.valueOf(Math.round(DatabaseManager.getInstance(Notcredits.getInstance()).getBalanceByOrder(position)));
                 } else if (parts.length == 3 && parts[0].equals("top") && parts[1].equals("name")) {
                     position = Integer.parseInt(parts[2])-1;
-                        if (Database.getInstance().getPlayerByOrder(position) == null) {
-                            return "NaN";
-                        } else {
-                            return Database.getInstance().getPlayerByOrder(position);
-                        }
+                    if (DatabaseManager.getInstance(Notcredits.getInstance()).getPlayerByBalance(position) == null) {
+                        return Notcredits.getInstance().getConfig().getString("placeholder_no_data");
+                    } else {
+                        return DatabaseManager.getInstance(Notcredits.getInstance()).getPlayerByBalance(position);
+                    }
                 }
             }
 

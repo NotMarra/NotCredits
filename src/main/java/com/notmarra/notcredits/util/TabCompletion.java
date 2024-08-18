@@ -1,4 +1,4 @@
-package com.notmarra.notcredits.utilities;
+package com.notmarra.notcredits.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -6,9 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class TabCompletion implements TabCompleter {
@@ -29,9 +27,7 @@ public class TabCompletion implements TabCompleter {
                     case "add":
                     case "remove":
                     case "set":
-                        Iterator players = Bukkit.getOnlinePlayers().iterator();
-                        while (players.hasNext()) {
-                            Player player = (Player) players.next();
+                        for (Player player : Bukkit.getOnlinePlayers()) {
                             completions.add(player.getName());
                         }
                 }
@@ -47,9 +43,7 @@ public class TabCompletion implements TabCompleter {
         }
         currentArg = args[args.length - 1];
         String finalCurrentArg = currentArg;
-        completions.removeIf((s) -> {
-            return !s.startsWith(finalCurrentArg);
-        });
+        completions.removeIf((s) -> !s.startsWith(finalCurrentArg));
         return completions;
     }
 }
