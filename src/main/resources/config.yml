@@ -6,6 +6,7 @@
 #All available languages can be found in the lang folder
 #You can create your own lang file, just duplicate en.yml and rename it
 #Available lang files: en, cz
+#Language from Contributors: zhcn (Simplified Chinese by SnowCutieOwO)
 lang: "en"
 
 data:
