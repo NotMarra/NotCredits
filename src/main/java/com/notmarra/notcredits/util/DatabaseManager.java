@@ -54,33 +54,12 @@ public class DatabaseManager {
     }
 
     public void setupDB() {
-        switch (databaseType) {
-            case "mysql":
-                setupMySQL();
-                break;
-            case "sqlite":
-                setupSQLite();
-                break;
-            case "h2":
-            default:
-                setupH2();
-                break;
+        if (databaseType.equals("mysql")) {
+            setupMySQL();
+        } else {
+            setupSQLite();
         }
     }
-
-    private void setupH2() {
-        try {
-            Class.forName("org.h2.Driver");
-            HikariConfig config = prepareConfig("jdbc:h2:file:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".h2");
-            dataSource = new HikariDataSource(config);
-            setupTable();
-        } catch (ClassNotFoundException e) {
-            Notcredits.getInstance().getLogger().severe("H2 Driver not found: " + e.getMessage());
-        } catch (Exception e) {
-            Notcredits.getInstance().getLogger().severe("Error setting up H2 database: " + e.getMessage());
-        }
-    }
-
     private void setupSQLite() {
         HikariConfig config;
         config = prepareConfig("jdbc:sqlite:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".db");

@@ -10,6 +10,7 @@ import com.notmarra.notcredits.util.*;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.ServicePriority;
@@ -34,6 +35,13 @@ public final class Notcredits extends JavaPlugin {
       this.saveDefaultConfig();
 
       this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), "1", "1", "https://github.com/NotMarra/NotCredits/releases");
+
+      H2ToSQLiteMigrator migrator = new H2ToSQLiteMigrator(this);
+      boolean migrated = migrator.migrateIfNeeded();
+
+      if (migrated) {
+         this.getLogger().info("H2 to SQLite migration completed. Please verify your data.");
+      }
 
       DatabaseManager.getInstance(this).setupDB();
 
@@ -74,6 +82,14 @@ public final class Notcredits extends JavaPlugin {
       }
 
       Metrics metrics = new Metrics(this, 18464);
+
+      metrics.addCustomChart(new SimplePie("language", () -> {
+          return config.getString("lang", "unknown");
+      }));
+
+      metrics.addCustomChart(new SimplePie("database_type", () -> {
+          return config.getString("data.type", "unknown");
+      }));
 
       this.getLogger().info("Enabled successfully!");
    }
