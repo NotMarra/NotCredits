@@ -36,13 +36,6 @@ public final class Notcredits extends JavaPlugin {
 
       this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), "1", "1", "https://github.com/NotMarra/NotCredits/releases");
 
-      H2ToSQLiteMigrator migrator = new H2ToSQLiteMigrator(this);
-      boolean migrated = migrator.migrateIfNeeded();
-
-      if (migrated) {
-         this.getLogger().info("H2 to SQLite migration completed. Please verify your data.");
-      }
-
       DatabaseManager.getInstance(this).setupDB();
 
       this.nmsHandler = getNMSHandler();
@@ -84,11 +77,11 @@ public final class Notcredits extends JavaPlugin {
       Metrics metrics = new Metrics(this, 18464);
 
       metrics.addCustomChart(new SimplePie("language", () -> {
-          return config.getString("lang", "unknown");
+          return config.getString("lang", "unknown").toUpperCase();
       }));
 
       metrics.addCustomChart(new SimplePie("database_type", () -> {
-          return config.getString("data.type", "unknown");
+          return config.getString("data.type", "unknown").toUpperCase();
       }));
 
       this.getLogger().info("Enabled successfully!");

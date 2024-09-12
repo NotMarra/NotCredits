@@ -5,7 +5,7 @@
 
     <groupId>com.notmarra</groupId>
     <artifactId>NotCredits</artifactId>
-    <version>2.3</version>
+    <version>2.4</version>
     <packaging>jar</packaging>
 
     <name>NotCredits</name>
@@ -67,6 +67,13 @@
                                     </excludes>
                                 </filter>
                             </filters>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.bstats:*</include>
+                                    <include>com.zaxxer:HikariCP</include>
+                                    <include>net.kyori:*</include>
+                                </includes>
+                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>
