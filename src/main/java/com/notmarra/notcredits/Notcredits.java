@@ -115,7 +115,7 @@ public final class Notcredits extends JavaPlugin {
    );
 
    public static final List<String> SUPPORTED_LANGUAGES = Arrays.asList(
-           "en", "cz", "zhcn"
+           "en", "cz", "zhcn", "ptbr"
    );
 
    private NMSHandler getNMSHandler() {
