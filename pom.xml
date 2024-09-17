@@ -5,7 +5,7 @@
 
     <groupId>com.notmarra</groupId>
     <artifactId>NotCredits</artifactId>
-    <version>2.5</version>
+    <version>2.6</version>
     <packaging>jar</packaging>
 
     <name>NotCredits</name>
@@ -53,6 +53,10 @@
                                     <pattern>net.kyori.adventure</pattern>
                                     <shadedPattern>com.notmarra.notcredits.adventure</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>net.kyori.examination</pattern>
+                                    <shadedPattern>com.notmarra.notcredits.examination</shadedPattern>
+                                </relocation>
                             </relocations>
                             <minimizeJar>true</minimizeJar>
                             <filters>
@@ -64,6 +68,9 @@
                                         <exclude>META-INF/*.RSA</exclude>
                                         <exclude>META-INF/MANIFEST.MF</exclude>
                                         <exclude>META-INF/versions/9/module-info.class</exclude>
+                                        <exclude>META-INF/versions/11/module-info</exclude>
+                                        <exclude>META-INF/maven/com.zaxxer/HikariCP/pom.properties</exclude>
+                                        <exclude>META-INF/maven/com.zaxxer/HikariCP/pom.xml</exclude>
                                     </excludes>
                                 </filter>
                             </filters>

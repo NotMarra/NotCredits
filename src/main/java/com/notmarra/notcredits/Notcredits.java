@@ -106,12 +106,12 @@ public final class Notcredits extends JavaPlugin {
    }
 
    public static final List<String> MINIMESSAGE_SUPPORTED_VERSIONS = Arrays.asList(
-           "v1_16_R1", "v1_16_R2", "v1_16_R3",
-           "v1_17_R1",
-           "v1_18_R1", "v1_18_R2",
-           "v1_19_R1", "v1_19_R2", "v1_19_R3",
-           "v1_20_R1", "v1_20_R2", "v1_20_R3",
-           "v1_21_R1"
+           "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5",
+           "1.17", "1.17.1",
+           "1.18", "1.18.1", "1.18.2",
+           "1.19", "1.19.1", "1.19.2", "1.19.3", "1.19.4",
+           "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6",
+           "1.21", "1.21.1"
    );
 
    public static final List<String> SUPPORTED_LANGUAGES = Arrays.asList(
@@ -119,7 +119,8 @@ public final class Notcredits extends JavaPlugin {
    );
 
    private NMSHandler getNMSHandler() {
-      String version = getServer().getClass().getPackage().getName().split("\\.")[3];
+      String version = Bukkit.getVersion().split("MC: ")[1].split("\\)")[0];
+
       getLogger().info("Using NMS version: " + version);
 
       if (MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {

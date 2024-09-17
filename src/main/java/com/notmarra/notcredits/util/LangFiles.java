@@ -7,7 +7,7 @@ import static com.notmarra.notcredits.Notcredits.SUPPORTED_LANGUAGES;
 
 public class LangFiles {
     public static void createLang() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        String version = Bukkit.getVersion().split("MC: ")[1].split("\\)")[0];
 
         if (MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
             for (String lang : SUPPORTED_LANGUAGES) {
