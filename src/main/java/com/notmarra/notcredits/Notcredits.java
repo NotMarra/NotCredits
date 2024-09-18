@@ -57,7 +57,7 @@ public final class Notcredits extends JavaPlugin {
          this.updater.checkForUpdates();
       }, 0L, 432000L);
 
-      updater.checkFilesAndUpdate("config.yml", "lang/en.yml", "lang/cz.yml", "lang/zhcn.yml", "lang/ptbr.yml");
+      updater.checkFilesAndUpdate();
 
       if (this.config.getBoolean("vault")) {
          if (Bukkit.getPluginManager().getPlugin("Vault") != null) {

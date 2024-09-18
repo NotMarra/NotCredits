@@ -1,6 +1,5 @@
 package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.Notcredits;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -11,6 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+
+import static com.notmarra.notcredits.Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS;
+import static com.notmarra.notcredits.Notcredits.SUPPORTED_LANGUAGES;
 
 public class Updater {
     private final Plugin plugin;
@@ -94,20 +96,23 @@ public class Updater {
         return stringBuilder.toString();
     }
 
-    public void checkFilesAndUpdate(String... files) {
-        for (String fileName : files) {
-            File file = new File(plugin.getDataFolder(), fileName);
-            if (fileName.equals("config.yml")) {
-                if (!Objects.equals(plugin.getConfig().getString("ver"), configVersion)) {
-                    updateFile(fileName, YamlConfiguration.loadConfiguration(file), configVersion);
-                }
-            } else if (fileName.startsWith("lang/")) {
-                String fileVersion = Files.getStringFromFile(file.getAbsolutePath(), "ver");
-                if (!Objects.equals(fileVersion, langVersion)) {
-                    updateFile(fileName, YamlConfiguration.loadConfiguration(file), langVersion);
-                }
+    public void checkFilesAndUpdate() {
+        if (!Objects.equals(plugin.getConfig().getString("ver"), configVersion)) {
+            updateFile("config.yml", YamlConfiguration.loadConfiguration(new File("config.yml")), configVersion);
+        }
+        String version = Bukkit.getVersion().split("MC: ")[1].split("\\)")[0];
+        boolean useMinimessage = MINIMESSAGE_SUPPORTED_VERSIONS.contains(version);
+
+        for (String lang : SUPPORTED_LANGUAGES) {
+            String fileName = "lang/" + lang + (useMinimessage ? ".yml" : "_nh.yml");
+            File langFile = new File(plugin.getDataFolder(), fileName);
+            YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
+
+            if (!Objects.equals(langConfig.getString("ver"), langVersion)) {
+                updateFile(fileName, langConfig, langVersion);
             }
         }
+
     }
 
     private void updateFile(String fileName, YamlConfiguration fileConfig, String newVersion) {
