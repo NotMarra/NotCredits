@@ -96,54 +96,38 @@ public class Updater {
 
     public void checkFilesAndUpdate(String... files) {
         for (String fileName : files) {
-            if (fileName.equals("config.yml") && !Objects.equals(Notcredits.getInstance().getConfig().getString("ver"), Updater.this.configVersion)) {
-                update(fileName);
-                Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.configVersion);
-            } else if (!Objects.equals(Files.getStringFromFile(Notcredits.getInstance().getDataFolder().getAbsolutePath() + "/" + fileName, "ver"), Updater.this.langVersion)) {
-                if (fileName.contains("lang/")) {
-                    update(fileName);
-                    Notcredits.getInstance().getLogger().info("Updated " + fileName + " to version " + Updater.this.langVersion);
+            File file = new File(plugin.getDataFolder(), fileName);
+            if (fileName.equals("config.yml")) {
+                if (!Objects.equals(plugin.getConfig().getString("ver"), configVersion)) {
+                    updateFile(fileName, YamlConfiguration.loadConfiguration(file), configVersion);
+                }
+            } else if (fileName.startsWith("lang/")) {
+                String fileVersion = Files.getStringFromFile(file.getAbsolutePath(), "ver");
+                if (!Objects.equals(fileVersion, langVersion)) {
+                    updateFile(fileName, YamlConfiguration.loadConfiguration(file), langVersion);
                 }
             }
         }
     }
 
-    private static void update(String fileName) {
-        File file = new File(Notcredits.getInstance().getDataFolder().getAbsolutePath(), fileName);
-        if (!file.exists()) {
-            Files.createFile(fileName);
-        } else {
-            try {
-                YamlConfiguration actualConfig = YamlConfiguration.loadConfiguration(file);
-                InputStreamReader urlReader = getInputStreamReader(fileName);
-                YamlConfiguration gitConfig = YamlConfiguration.loadConfiguration(urlReader);
+    private void updateFile(String fileName, YamlConfiguration fileConfig, String newVersion) {
+        try {
+            InputStream defaultConfigStream = plugin.getResource(fileName);
+            if (defaultConfigStream != null) {
+                YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream, StandardCharsets.UTF_8));
 
-                for (String key : gitConfig.getKeys(true)) {
-                    if (!actualConfig.contains(key)) {
-                        actualConfig.set(key, gitConfig.get(key));
+                for (String key : defaultConfig.getKeys(true)) {
+                    if (!fileConfig.contains(key)) {
+                        fileConfig.set(key, defaultConfig.get(key));
                     }
                 }
 
-                actualConfig.save(file);
-                urlReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                fileConfig.set("ver", newVersion);
+                fileConfig.save(new File(plugin.getDataFolder(), fileName));
+                plugin.getLogger().info("Updated " + fileName + " to version " + newVersion);
             }
-
+        } catch (IOException e) {
+            plugin.getLogger().warning("Failed to update " + fileName + ": " + e.getMessage());
         }
-    }
-
-    @NotNull
-    private static InputStreamReader getInputStreamReader(String fileName) throws IOException {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        URL url;
-
-        if (Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
-            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName);
-        } else {
-            url = new URL("https://raw.githubusercontent.com/NotMarra/NotCredits/master/src/main/resources/" + fileName.replace(".yml", "_nh.yml"));
-        }
-
-        return new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
     }
 }

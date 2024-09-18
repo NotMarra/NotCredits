@@ -47,13 +47,19 @@ public class UniCommand {
             }
 
             double credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(targetPlayer.getUniqueId().toString());
-
+            double actualAmount = amount;
             switch (operator) {
                 case "add":
                     credits += amount;
                     break;
                 case "remove":
-                    credits -= amount;
+                    double diff = credits - amount;
+                    if (diff < 0) {
+                        actualAmount = credits;
+                        credits = 0;
+                    } else {
+                        credits -= amount;
+                    }
                     break;
                 case "set":
                     credits = amount;
@@ -66,7 +72,7 @@ public class UniCommand {
             DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(targetPlayer.getUniqueId().toString(), credits);
 
             Map<String, String> replacements = new HashMap<>();
-            replacements.put("amount", Decimal.formatBalance(amount));
+            replacements.put("amount", Decimal.formatBalance(actualAmount));
             replacements.put("player", targetPlayer.getName());
             Message.sendMessage(player, message_admin, isConsole, replacements);
             replacements.remove("player");
