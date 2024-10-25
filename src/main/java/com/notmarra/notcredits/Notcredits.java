@@ -114,7 +114,7 @@ public final class Notcredits extends JavaPlugin {
            "1.18", "1.18.1", "1.18.2",
            "1.19", "1.19.1", "1.19.2", "1.19.3", "1.19.4",
            "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6",
-           "1.21", "1.21.1"
+           "1.21", "1.21.1", "1.21.2", "1.21.3"
    );
 
    public static final List<String> SUPPORTED_LANGUAGES = Arrays.asList(
@@ -135,30 +135,68 @@ public final class Notcredits extends JavaPlugin {
       }
    }
 
+   /**
+    * Sets the balance for a player identified by their unique UUID.
+    * Parameters:
+    * @param uuid: Unique identifier for the player.
+    * @param amount: The amount to set as the player's new balance.
+    */
    public void setBalance(String uuid, double amount) {
       DatabaseManager.getInstance(this).setBalance(uuid, amount);
    }
+
+   /**
+    * Gets the balance for a player identified by their unique UUID.
+    * @param uuid
+    * @return The balance of the player.
+    */
 
     public double getBalance(String uuid) {
         return DatabaseManager.getInstance(this).getBalance(uuid);
     }
 
+    /**
+     * Sets the balance for a player identified by their Name.
+     * @param name
+     * @return The balance of the player.
+     */
     public void setBalanceByName(String name, double amount) {
         DatabaseManager.getInstance(this).setBalanceByPlayerName(name, amount);
     }
 
+    /**
+     * Gets the balance for a player identified by their Name.
+     * @param name
+     * @return The balance of the player.
+     */
     public double getBalanceByName(String name) {
         return DatabaseManager.getInstance(this).getBalanceByPlayerName(name);
     }
 
+    /**
+     * Retrieves the balance of a player based on their position in the balance ranking.
+     * @param order
+     * @return The balance of the player.
+     */
     public double getBalanceByOrder(int order) {
         return DatabaseManager.getInstance(this).getBalanceByOrder(order);
     }
 
+    /**
+     * Retrieves the name of the player based on their position in the balance ranking.
+     * @param order
+     * @return The name of the player.
+     */
     public String getTopPlayerName(int order) {
         return DatabaseManager.getInstance(this).getPlayerByBalance(order);
     }
 
+    /**
+     * Retrieves a list of players and their balances starting from a specified rank position.
+     * @param position
+     * @param amount
+     * @return List<Map<String, Double>>
+     */
     public List<Map<String, Double>> getTopPlayersWithBalance(int position, int amount) {
         return DatabaseManager.getInstance(this).getPlayersByBalance(position, amount);
     }
