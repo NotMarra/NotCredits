@@ -43,7 +43,7 @@ dependencyResolutionManagement {
 Dependency:
 ```
 dependencies {
-  implementation 'com.github.NotMarra:NotCredits:Tag'
+  implementation 'com.github.NotMarra:NotCredits:v2.0'
 }
 ```
 
