@@ -1,4 +1,0 @@
-name: NotCredits
-version: '${project.version}'
-main: com.notmarra.notcredits.NotCredits
-api-version: '1.21'

@@ -1,6 +1,6 @@
 package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.NotCredits;
+import com.notmarra.notcredits.Notcredits;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DatabaseManager {
+
     private final String databaseType;
     private final String host;
     private final String name;
@@ -24,7 +25,7 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private static HikariDataSource dataSource;
 
-    private DatabaseManager(NotCredits plugin) {
+    private DatabaseManager(Notcredits plugin) {
         FileConfiguration config = plugin.getConfig();
         this.databaseType = config.getString("data.type").toLowerCase();
         this.host = config.getString("data.mysql.host");
@@ -36,7 +37,7 @@ public class DatabaseManager {
         this.fileName = config.getString("data.file");
     }
 
-    public static DatabaseManager getInstance(NotCredits plugin) {
+    public static DatabaseManager getInstance(Notcredits plugin) {
         if (instance == null) {
             instance = new DatabaseManager(plugin);
         }
@@ -47,63 +48,39 @@ public class DatabaseManager {
         dataSource.close();
     }
 
+
     public boolean isConnected() {
         return dataSource != null;
     }
 
     public void setupDB() {
-        HikariConfig config;
-        config = prepareConfig();
-
-        switch (databaseType) {
-            case "mysql":
-                setupMySQL(config);
-                break;
-            case "sqlite":
-                setupSQLite(config);
-                break;
-            case "postgresql":
-                setupPostgreSQL(config);
-                break;
-            case "mariadb":
-                setupMariaDB(config);
-                break;
-            default:
-                setupH2(config);
-                break;
+        if (databaseType.equals("mysql")) {
+            setupMySQL();
+        } else {
+            setupSQLite();
         }
+    }
+    private void setupSQLite() {
+        HikariConfig config;
+        config = prepareConfig("jdbc:sqlite:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".db");
 
         dataSource = new HikariDataSource(config);
+
         setupTable();
-
     }
 
-    private void setupSQLite(HikariConfig config) {
-        config.setDataSourceClassName("org.sqlite.JDBC");
-        config.setJdbcUrl("jdbc:sqlite:" + NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".db");
+    private void setupMySQL() {
+        HikariConfig config;
+        config = prepareConfig("jdbc:mysql://" + host + ":" + port + "/" + name);
+
+        dataSource = new HikariDataSource(config);
+
+        setupTable();
     }
 
-    private void setupH2(HikariConfig config) {
-        config.setDataSourceClassName("org.h2.jdbcx.JdbcDataSource");
-        config.setJdbcUrl("jdbc:h2:file:" + NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ";DB_CLOSE_DELAY=-1");
-    }
-
-    private void setupMySQL(HikariConfig config) {
-        config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + name);
-    }
-
-    private void setupPostgreSQL(HikariConfig config) {
-        config.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
-        config.setJdbcUrl("jdbc:postgresql://" + host + ":" + port + "/" + name);
-    }
-
-    private void setupMariaDB(HikariConfig config) {
-        config.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
-        config.setJdbcUrl("jdbc:mariadb://" + host + ":" + port + "/" + name);
-    }
-
-    private HikariConfig prepareConfig() {
+    private HikariConfig prepareConfig(String url) {
         HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
         config.setUsername(user);
         config.setPassword(pass);
         config.addDataSourceProperty("cachePrepStmts", "true");
@@ -226,3 +203,4 @@ public class DatabaseManager {
         return resultList;
     }
 }
+
