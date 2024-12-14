@@ -2,3 +2,12 @@ name: NotCredits
 version: '${project.version}'
 main: com.notmarra.notcredits.NotCredits
 api-version: '1.21'
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+    Vault:
+      load: BEFORE
+      required: false

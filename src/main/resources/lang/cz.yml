@@ -1,0 +1,42 @@
+# NotCredits plugin
+# Od NotMarra
+#
+# Překlad v českém jazyce:
+prefix: "<gradient:#0077ff:#005ec9><b>Kredity</b></gradient> <dark_gray>»</dark_gray> <white>"
+
+# Zprávy pro nápovědu:
+help:
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
+  - ""
+  - "<#0077ff><bold>/credits</bold></#0077ff><gray> - Zobrazí, kolik kreditů hráč má."
+  - "<#0077ff><bold>/credits set {hráč} {množství}</bold></#0077ff><gray> - Nastaví počet kreditů hráče."
+  - "<#0077ff><bold>/credits add {hráč} {množství}</bold></#0077ff><gray> - Přidá hráči kredity."
+  - "<#0077ff><bold>/credits remove {hráč} {množství}</bold></#0077ff><gray> - Odebere hráči kredity."
+  - "<#0077ff><bold>/credits reload</bold></#0077ff><gray> - Znovu načte plugin."
+  - ""
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
+
+# Kredity hráče:
+credits: "%prefix%Máte <#005ec9><b>%credits%</b></#005ec9><white> kreditů."
+credits_set: "%prefix%Vaše kredity byly nastaveny na <#005ec9><b>%amount%</b></#005ec9><white>!"
+credits_add: "%prefix%Bylo vám přidáno <#005ec9><b>%amount%</b></#005ec9><white> kreditů."
+credits_remove: "%prefix%Bylo vám odebráno <#005ec9><b>%amount%</b></#005ec9><white> kreditů."
+
+# Admin
+invalid_operator: "%prefix%Neplatný operátor, použijte: /credits <add/set/remove> <hráč> <množství>!"
+invalid_use_set: "%prefix%Neplatné použití příkazu, použijte: /credits set <hráč> <množství>!"
+invalid_use_add: "%prefix%Neplatné použití příkazu, použijte: /credits add <hráč> <množství>!"
+invalid_use_remove: "%prefix%Neplatné použití příkazu, použijte: /credits remove <hráč> <množství>!"
+set_credits: "%prefix%Nastavili jste kredity hráče <#005ec9><b>%player%</b></#005ec9><white> na <#005ec9><b>%amount%</b></#005ec9><white>!"
+add_credits: "%prefix%Přidali jste <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>!"
+remove_credits: "%prefix%Odebrali jste <#005ec9><b>%amount%</b></#005ec9><white> kreditů hráči <#005ec9><b>%player%</b></#005ec9><white>."
+reload: "%prefix%Plugin byl úspěšně znovu načten!"
+
+# Chyby
+not_number: "%prefix%Neplatné množství."
+not_positive_number: "%prefix%Množství musí být kladné číslo."
+player_not_found: "%prefix%Hráč nebyl nalezen."
+no_perm: "%prefix%Nemáte dostatečná oprávnění k provedení tohoto příkazu!"
+
+# NEMĚŇTE TOTO
+ver: 1

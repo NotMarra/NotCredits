@@ -5,8 +5,8 @@
 #Set which language the plugin should use
 #All available languages can be found in the lang folder
 #You can create your own lang file, just duplicate en.yml and rename it
-#Available lang files: en, cz, zhcn, ptbr
-#Language from Contributors: zhcn (Simplified Chinese by SnowCutieOwO), ptbr (Portuguese (Brazil) by NetoSantoos78)
+#Available lang files: en, cz, zhcn.yml, ptbr
+#Language from Contributors: zhcn.yml (Simplified Chinese by SnowCutieOwO), ptbr (Portuguese (Brazil) by NetoSantoos78)
 lang: "en"
 
 data:
