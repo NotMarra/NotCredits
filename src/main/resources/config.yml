@@ -5,20 +5,20 @@
 #Set which language the plugin should use
 #All available languages can be found in the lang folder
 #You can create your own lang file, just duplicate en.yml and rename it
-#Available lang files: en, cz
+#Available lang files: en, cz, zhcn, ptbr
 #Language from Contributors: zhcn (Simplified Chinese by SnowCutieOwO), ptbr (Portuguese (Brazil) by NetoSantoos78)
 lang: "en"
 
 data:
   #Set the type of the database
-  #Available types: SQLite, MySQL
-  type: "SQLite"
-  #What will be the name of the file with the saved data (only works with SQLite)
+  #Available types: SQLite, MySQL, H2, PostgreSQL, MariaDB
+  type: "H2"
+  #What will be the name of the file with the saved data (only works with SQLite and H2)
   file: "data"
-  #What will be the name of the table with the saved data (works on both)
+  #What will be the name of the table with the saved data (only works with MySQL, PostgreSQL, MariaDB)
   table: 'NotCredits'
 
-  #If data type is set to MySQL, enter the login information from MySQL
+  #If data type is set to MySQL, PostgreSQL or MariaDB, fill in the following fields
   mysql:
     host: ''
     port: 3306
@@ -39,6 +39,7 @@ balance_format: '#.##'
 #Set true if you want to use Vault
 vault: false
 
+#If top placeholder is empty, it will show this message
 placeholder_no_data: "NaN"
 
 #DO NOT CHANGE THIS
