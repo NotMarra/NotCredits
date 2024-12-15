@@ -85,11 +85,14 @@ public class DatabaseManager {
 
     private void setupH2(HikariConfig config) {
         config.setDataSourceClassName("org.h2.jdbcx.JdbcDataSource");
-        config.setJdbcUrl("jdbc:h2:file:" + NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ";DB_CLOSE_DELAY=-1");
+        config.setJdbcUrl("jdbc:h2:file:" + NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName);
     }
 
     private void setupMySQL(HikariConfig config) {
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + name);
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("cachePrepStmts", "true");
     }
 
     private void setupPostgreSQL(HikariConfig config) {
@@ -106,9 +109,6 @@ public class DatabaseManager {
         HikariConfig config = new HikariConfig();
         config.setUsername(user);
         config.setPassword(pass);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         config.setPoolName("NotCredits");
         return config;
     }
