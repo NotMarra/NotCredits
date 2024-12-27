@@ -46,30 +46,12 @@ public final class NotCredits extends JavaPlugin {
         updater.checkFilesAndUpdate();
 
         this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
-
-        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
-        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
-            final Commands commands = event.registrar();
-            CommandCreator commandCreator = new CommandCreator();
-
-            commands.register(Commands.literal("credits")
-                    .then(
-                            Commands.argument("action", new com.notmarra.notcredits.util.Arguments())
-                                    .then(
-                                            Commands.argument("player", StringArgumentType.word())
-                                                    .then(
-                                                            Commands.argument("amount", DoubleArgumentType.doubleArg())
-                                                    )
-                                    )
-                                    .executes(context -> {
-                                        commandCreator.execute(context.getSource(), new String[]{"argument1", "argument2"});
-                                        return Command.SINGLE_SUCCESS;
-                                    })
-                    ).build()
-            );
-            commands.register("nc", "Base command of NotCredits", commandCreator);
-            commands.register("notcredits", "Base command of NotCredits", commandCreator);
-        });
+        this.getCommand("credits").setExecutor(new CommandCreator());
+        this.getCommand("nc").setExecutor(new CommandCreator());
+        this.getCommand("notcredits").setExecutor(new CommandCreator());
+        this.getCommand("credits").setTabCompleter(new TabCompletion());
+        this.getCommand("nc").setTabCompleter(new TabCompletion());
+        this.getCommand("notcredits").setTabCompleter(new TabCompletion());
 
         Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
             this.updater.checkForUpdates();

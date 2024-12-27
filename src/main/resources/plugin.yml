@@ -1,0 +1,13 @@
+name: NotCredits
+version: ${project.version}
+main: com.notmarra.notcredits.NotCredits
+api-version: 1.21
+authors: [ NotMarra ]
+description: Economy plugin
+website: www.notmarra.com
+softdepend: [PlaceholderAPI, Vault]
+commands:
+  credits:
+    description: Base command for NotCredits
+    usage: /<command>
+    aliases: [nc, notcredits]

@@ -11,8 +11,8 @@ lang: "en"
 
 data:
   #Set the type of the database
-  #Available types: SQLite, MySQL, H2, PostgreSQL, MariaDB
-  type: "H2"
+  #Available types: SQLite, MySQL, PostgreSQL, MariaDB
+  type: "SQLite"
   #What will be the name of the file with the saved data (only works with SQLite and H2)
   file: "data"
   #What will be the name of the table with the saved data (only works with MySQL, PostgreSQL, MariaDB)

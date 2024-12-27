@@ -59,9 +59,6 @@ public class DatabaseManager {
             case "mysql":
                 setupMySQL(config);
                 break;
-            case "sqlite":
-                setupSQLite(config);
-                break;
             case "postgresql":
                 setupPostgreSQL(config);
                 break;
@@ -69,30 +66,37 @@ public class DatabaseManager {
                 setupMariaDB(config);
                 break;
             default:
-                setupH2(config);
+                setupSQLite(config);
                 break;
         }
 
         dataSource = new HikariDataSource(config);
         setupTable();
-
     }
 
     private void setupSQLite(HikariConfig config) {
-        config.setDataSourceClassName("org.sqlite.JDBC");
-        config.setJdbcUrl("jdbc:sqlite:" + NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".db");
-    }
+        // Use driverClassName instead of dataSourceClassName for SQLite
+        config.setDriverClassName("org.sqlite.JDBC");
 
-    private void setupH2(HikariConfig config) {
-        config.setDataSourceClassName("org.h2.jdbcx.JdbcDataSource");
-        config.setJdbcUrl("jdbc:h2:file:" + NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName);
+        // Set the JDBC URL directly
+        String fullpath = NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName;
+        config.setJdbcUrl("jdbc:sqlite:" + fullpath);
+
+        // SQLite specific configurations
+        config.setMaximumPoolSize(1); // SQLite only supports one connection at a time
+        config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
+
+        // Optional but recommended settings for SQLite
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
     }
 
     private void setupMySQL(HikariConfig config) {
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + name);
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
     }
 
     private void setupPostgreSQL(HikariConfig config) {
@@ -110,6 +114,7 @@ public class DatabaseManager {
         config.setUsername(user);
         config.setPassword(pass);
         config.setPoolName("NotCredits");
+
         return config;
     }
 

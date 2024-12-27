@@ -42,11 +42,11 @@
               <relocations>
                 <relocation>
                   <pattern>org.bstats</pattern>
-                  <shadedPattern>com.notmarra.notcredits.bstats</shadedPattern>
+                  <shadedPattern>com.notmarra.notcredits.libs.bstats</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.zaxxer.hikari</pattern>
-                  <shadedPattern>com.notmarra.notcredits.hikari</shadedPattern>
+                  <shadedPattern>com.notmarra.notcredits.libs.hikari</shadedPattern>
                 </relocation>
               </relocations>
               <filters>
@@ -60,7 +60,7 @@
                   </excludes>
                 </filter>
               </filters>
-              <minimizeJar>false</minimizeJar>
+              <minimizeJar>true</minimizeJar>
             </configuration>
           </execution>
         </executions>
@@ -122,12 +122,6 @@
           <groupId>org.bstats</groupId>
           <artifactId>bstats-bukkit</artifactId>
           <version>3.0.2</version>
-          <scope>compile</scope>
-      </dependency>
-      <dependency>
-          <groupId>com.h2database</groupId>
-          <artifactId>h2</artifactId>
-          <version>2.3.232</version>
           <scope>compile</scope>
       </dependency>
   </dependencies>

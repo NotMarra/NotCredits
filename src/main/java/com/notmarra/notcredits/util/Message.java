@@ -23,8 +23,7 @@ public class Message {
     }
 
     public static void sendMessage(Player player, String message_path, Boolean isConsole, Map<String, String> replacements) {
-        String message = getMessage(message_path);
-        transformText(player, isConsole, replacements, message);
+        transformText(player, isConsole, replacements, getMessage(message_path));
     }
 
     public static void sendRawMessage(Player player, String message, Boolean isConsole, Map<String, String> replacements) {
@@ -45,7 +44,9 @@ public class Message {
         }
 
         if (player != null && !isConsole) {
-                player.sendMessage(message);
+            Audience audience = Bukkit.getServer().getPlayer(player.getUniqueId());
+            MiniMessage mm = MiniMessage.miniMessage();
+            audience.sendMessage(mm.deserialize(message));
         }
         if (isConsole) {
             message = stripFormatting(message);
@@ -57,11 +58,5 @@ public class Message {
         String withoutMiniMessage = input.replaceAll("<[^>]+>", "");
 
         return withoutMiniMessage.replaceAll("§[0-9a-fk-or]", "");
-    }
-
-    public void sendChatMessage(Player player, String message) {
-        Audience audience = Bukkit.getServer().getPlayer(player.getUniqueId());
-        MiniMessage mm = MiniMessage.miniMessage();
-        audience.sendMessage(mm.deserialize(message));
     }
 }
