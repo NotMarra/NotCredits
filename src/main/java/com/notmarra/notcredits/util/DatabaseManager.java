@@ -75,18 +75,14 @@ public class DatabaseManager {
     }
 
     private void setupSQLite(HikariConfig config) {
-        // Use driverClassName instead of dataSourceClassName for SQLite
         config.setDriverClassName("org.sqlite.JDBC");
 
-        // Set the JDBC URL directly
         String fullpath = NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName;
         config.setJdbcUrl("jdbc:sqlite:" + fullpath);
 
-        // SQLite specific configurations
-        config.setMaximumPoolSize(1); // SQLite only supports one connection at a time
+        config.setMaximumPoolSize(1);
         config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
 
-        // Optional but recommended settings for SQLite
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -183,6 +179,25 @@ public class DatabaseManager {
     }
     public void setupPlayer(String uuid, String player_name, double balance) {
         setSTMT("INSERT INTO " + table + " (uuid, player_name, balance) VALUES (?, ?, ?)", uuid, player_name, balance);
+    }
+
+    public String getPlayerName(String uuid) {
+        return getSTMTSingle("SELECT player_name FROM " + table + " WHERE uuid = ?", uuid);
+    }
+
+    public String getPlayerUUID(String player_name) {
+        return getSTMTSingle("SELECT uuid FROM " + table + " WHERE player_name = ?", player_name);
+    }
+
+    public List<String> getPlayers() {
+        List<Map<String, String>> result = getSTMT("SELECT player_name FROM " + table);
+        if (result == null) return null;
+
+        List<String> players = new ArrayList<>();
+        for (Map<String, String> row : result) {
+            players.add(row.get("player_name"));
+        }
+        return players;
     }
 
     public void setBalance(String uuid, double balance) {
