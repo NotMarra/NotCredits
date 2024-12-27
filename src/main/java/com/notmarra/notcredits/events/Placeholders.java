@@ -42,6 +42,12 @@ public class Placeholders extends PlaceholderExpansion {
             String pname = player.getUniqueId().toString();
             double credits = 0.0D;
 
+            credits = DatabaseManager.getInstance(NotCredits.getInstance()).getBalance(pname);
+
+            return String.valueOf(Math.round(credits));
+        } else if (identifier.equals("credits_formatted")) {
+            String pname = player.getUniqueId().toString();
+            double credits = 0.0D;
 
             credits = DatabaseManager.getInstance(NotCredits.getInstance()).getBalance(pname);
 

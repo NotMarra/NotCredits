@@ -1,21 +1,14 @@
 package com.notmarra.notcredits;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.notmarra.notcredits.events.Economy_NotCredits;
 import com.notmarra.notcredits.events.Placeholders;
 import com.notmarra.notcredits.events.PlayerJoin;
 import com.notmarra.notcredits.util.*;
-import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,7 +29,7 @@ public final class NotCredits extends JavaPlugin {
         this.config.options().copyDefaults(true);
         this.saveDefaultConfig();
 
-        this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), "1", "1", "https://github.com/NotMarra/NotCredits/releases");
+        this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), "2", "2", "https://github.com/NotMarra/NotCredits/releases");
 
         DatabaseManager.getInstance(this).setupDB();
 

@@ -20,6 +20,7 @@ help:
 
 #player
 credits: "%prefix%You have <#005ec9><b>%credits%</b></#005ec9><white> credits."
+credits_other: "%prefix%Player <#005ec9><b>%player%</b></#005ec9><white> has <#005ec9><b>%credits%</b></#005ec9><white> credits."
 credits_set: "%prefix%Your credits have been set to <#005ec9><b>%amount%</b></#005ec9><white>!"
 credits_add: "%prefix%You have been given <#005ec9><b>%amount%</b></#005ec9><white> credits."
 credits_remove: "%prefix%A <#005ec9><b>%amount%</b></#005ec9><white> of credits have been removed."
@@ -42,4 +43,4 @@ player_not_found: "%prefix%Player not found."
 no_perm: "%prefix%You do not have sufficient permission to execute this command!"
 
 #DO NOT CHANGE THIS
-ver: 1
+ver: 2

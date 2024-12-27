@@ -18,6 +18,7 @@ help:
 
 # Kredity hráče:
 credits: "%prefix%Máte <#005ec9><b>%credits%</b></#005ec9><white> kreditů."
+credits_other: "%prefix%Hráč <#005ec9><b>%player%</b></#005ec9><white> má <#005ec9><b>%credits%</b></#005ec9><white> kreditů."
 credits_set: "%prefix%Vaše kredity byly nastaveny na <#005ec9><b>%amount%</b></#005ec9><white>!"
 credits_add: "%prefix%Bylo vám přidáno <#005ec9><b>%amount%</b></#005ec9><white> kreditů."
 credits_remove: "%prefix%Bylo vám odebráno <#005ec9><b>%amount%</b></#005ec9><white> kreditů."
@@ -39,4 +40,4 @@ player_not_found: "%prefix%Hráč nebyl nalezen."
 no_perm: "%prefix%Nemáte dostatečná oprávnění k provedení tohoto příkazu!"
 
 # NEMĚŇTE TOTO
-ver: 1
+ver: 2
