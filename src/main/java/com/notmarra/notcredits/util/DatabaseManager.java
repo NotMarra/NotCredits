@@ -55,19 +55,10 @@ public class DatabaseManager {
         HikariConfig config;
         config = prepareConfig();
 
-        switch (databaseType) {
-            case "mysql":
-                setupMySQL(config);
-                break;
-            case "postgresql":
-                setupPostgreSQL(config);
-                break;
-            case "mariadb":
-                setupMariaDB(config);
-                break;
-            default:
-                setupSQLite(config);
-                break;
+        if (databaseType.equals("mysql")) {
+            setupMySQL(config);
+        } else {
+            setupSQLite(config);
         }
 
         dataSource = new HikariDataSource(config);
@@ -93,16 +84,6 @@ public class DatabaseManager {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-    }
-
-    private void setupPostgreSQL(HikariConfig config) {
-        config.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
-        config.setJdbcUrl("jdbc:postgresql://" + host + ":" + port + "/" + name);
-    }
-
-    private void setupMariaDB(HikariConfig config) {
-        config.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
-        config.setJdbcUrl("jdbc:mariadb://" + host + ":" + port + "/" + name);
     }
 
     private HikariConfig prepareConfig() {

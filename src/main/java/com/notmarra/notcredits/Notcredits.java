@@ -46,9 +46,11 @@ public final class NotCredits extends JavaPlugin {
         this.getCommand("nc").setTabCompleter(new TabCompletion());
         this.getCommand("notcredits").setTabCompleter(new TabCompletion());
 
-        Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-            this.updater.checkForUpdates();
-        }, 0L, 432000L);
+        if (this.config.getBoolean("update_notifications")) {
+            Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+                this.updater.checkForUpdates();
+            }, 0L, 432000L);
+        }
 
         if (this.config.getBoolean("vault")) {
             if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
@@ -102,14 +104,6 @@ public final class NotCredits extends JavaPlugin {
         this.config = this.getConfig();
         LanguageManager.loadMessages();
         this.getLogger().info("Plugin reloaded successfully!");
-    }
-
-    public enum Arguments {
-        ADD,
-        REMOVE,
-        SET,
-        RELOAD,
-        HELP
     }
 
     /**

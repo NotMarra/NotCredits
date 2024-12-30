@@ -9,16 +9,18 @@
 #Language from Contributors: zhcn.yml (Simplified Chinese by SnowCutieOwO), ptbr (Portuguese (Brazil) by NetoSantoos78)
 lang: "en"
 
+update_notifications: true
+
 data:
   #Set the type of the database
-  #Available types: SQLite, MySQL, PostgreSQL, MariaDB
+  #Available types: SQLite, MySQL
   type: "SQLite"
   #What will be the name of the file with the saved data (only works with SQLite)
   file: "data"
-  #What will be the name of the table with the saved data (only works with MySQL, PostgreSQL, MariaDB)
+  #What will be the name of the table with the saved data (only works with MySQL)
   table: 'NotCredits'
 
-  #If data type is set to MySQL, PostgreSQL or MariaDB, fill in the following fields
+  #If data type is set to MySQL, fill in the following fields
   mysql:
     host: ''
     port: 3306
