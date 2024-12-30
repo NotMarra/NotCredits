@@ -10,9 +10,7 @@ public class HelpCommand {
     public static void execute(CommandSender sender) {
         List<String> help = Message.getMessageList("help");
 
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-
+        if (sender instanceof Player p) {
             for (String line : help) {
                 Message.sendRawMessage(p, line, false, null);
             }

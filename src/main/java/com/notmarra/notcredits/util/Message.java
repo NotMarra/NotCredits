@@ -1,6 +1,8 @@
 package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.NotCredits;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -8,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Message {
-
     public static String getMessage(String message) {
         return LanguageManager.getMessage(message);
     }
@@ -22,8 +23,7 @@ public class Message {
     }
 
     public static void sendMessage(Player player, String message_path, Boolean isConsole, Map<String, String> replacements) {
-        String message = getMessage(message_path);
-        transformText(player, isConsole, replacements, message);
+        transformText(player, isConsole, replacements, getMessage(message_path));
     }
 
     public static void sendRawMessage(Player player, String message, Boolean isConsole, Map<String, String> replacements) {
@@ -44,15 +44,13 @@ public class Message {
         }
 
         if (player != null && !isConsole) {
-            if (Notcredits.getInstance().nmsHandler != null) {
-                Notcredits.getInstance().nmsHandler.sendChatMessage(player, message);
-            } else {
-                player.sendMessage(message);
-            }
+            Audience audience = Bukkit.getServer().getPlayer(player.getUniqueId());
+            MiniMessage mm = MiniMessage.miniMessage();
+            audience.sendMessage(mm.deserialize(message));
         }
         if (isConsole) {
             message = stripFormatting(message);
-            Bukkit.getLogger().info(message);
+            NotCredits.getInstance().getLogger().info(message);
         }
     }
 

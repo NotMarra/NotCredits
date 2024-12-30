@@ -5,9 +5,11 @@
 #Set which language the plugin should use
 #All available languages can be found in the lang folder
 #You can create your own lang file, just duplicate en.yml and rename it
-#Available lang files: en, cz
-#Language from Contributors: zhcn (Simplified Chinese by SnowCutieOwO), ptbr (Portuguese (Brazil) by NetoSantoos78)
+#Available lang files: en, cz, zhcn, ptbr
+#Language from Contributors: zhcn.yml (Simplified Chinese by SnowCutieOwO), ptbr (Portuguese (Brazil) by NetoSantoos78)
 lang: "en"
+
+update_notifications: true
 
 data:
   #Set the type of the database
@@ -15,10 +17,10 @@ data:
   type: "SQLite"
   #What will be the name of the file with the saved data (only works with SQLite)
   file: "data"
-  #What will be the name of the table with the saved data (works on both)
+  #What will be the name of the table with the saved data (only works with MySQL)
   table: 'NotCredits'
 
-  #If data type is set to MySQL, enter the login information from MySQL
+  #If data type is set to MySQL, fill in the following fields
   mysql:
     host: ''
     port: 3306
@@ -32,6 +34,9 @@ default_balance: 0
 #Set true if you want decimal numbers
 balance_decimal: false
 
+#Set true if you want to show the balance in short format (1k instead of 1000)
+balance_short: false
+
 #How the numbers will be formatted (#.## means the number will look like this: 1.25)
 #Only works if "balance_decimal" is set to true
 balance_format: '#.##'
@@ -39,7 +44,8 @@ balance_format: '#.##'
 #Set true if you want to use Vault
 vault: false
 
+#If top placeholder is empty, it will show this message
 placeholder_no_data: "NaN"
 
 #DO NOT CHANGE THIS
-ver: 1
+ver: 2

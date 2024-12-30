@@ -1,6 +1,6 @@
 package com.notmarra.notcredits.events;
 
-import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.NotCredits;
 import com.notmarra.notcredits.util.DatabaseManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -40,7 +40,7 @@ public class Economy_NotCredits implements Economy {
     }
 
     public double getBalance(OfflinePlayer player) {
-        return player != null && player.getPlayer() != null ? DatabaseManager.getInstance(Notcredits.getInstance()).getBalanceByPlayerName(player.getName()) : 0.0D;
+        return player != null && player.getPlayer() != null ? DatabaseManager.getInstance(NotCredits.getInstance()).getBalanceByPlayerName(player.getName()) : 0.0D;
     }
 
     public double getBalance(String name, String world) {
@@ -83,7 +83,7 @@ public class Economy_NotCredits implements Economy {
             } else {
                 balance -= amount;
 
-                DatabaseManager.getInstance(Notcredits.getInstance()).setBalanceByPlayerName(player.getName(), balance);
+                DatabaseManager.getInstance(NotCredits.getInstance()).setBalanceByPlayerName(player.getName(), balance);
 
                 return new EconomyResponse(amount, balance, ResponseType.SUCCESS, "");
             }
@@ -112,7 +112,7 @@ public class Economy_NotCredits implements Economy {
             } else {
                 balance += amount;
 
-                DatabaseManager.getInstance(Notcredits.getInstance()).setBalanceByPlayerName(player.getName(), balance);
+                DatabaseManager.getInstance(NotCredits.getInstance()).setBalanceByPlayerName(player.getName(), balance);
 
                 return new EconomyResponse(amount, balance, ResponseType.SUCCESS, "");
             }

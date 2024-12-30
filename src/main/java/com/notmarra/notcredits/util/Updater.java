@@ -1,6 +1,5 @@
 package com.notmarra.notcredits.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -11,8 +10,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-import static com.notmarra.notcredits.Notcredits.MINIMESSAGE_SUPPORTED_VERSIONS;
-import static com.notmarra.notcredits.Notcredits.SUPPORTED_LANGUAGES;
+import static com.notmarra.notcredits.NotCredits.SUPPORTED_LANGUAGES;
 
 public class Updater {
     private final Plugin plugin;
@@ -100,11 +98,8 @@ public class Updater {
         if (!Objects.equals(plugin.getConfig().getString("ver"), configVersion)) {
             updateFile("config.yml", YamlConfiguration.loadConfiguration(new File("config.yml")), configVersion);
         }
-        String version = Bukkit.getVersion().split("MC: ")[1].split("\\)")[0];
-        boolean useMinimessage = MINIMESSAGE_SUPPORTED_VERSIONS.contains(version);
-
         for (String lang : SUPPORTED_LANGUAGES) {
-            String fileName = "lang/" + lang + (useMinimessage ? ".yml" : "_nh.yml");
+            String fileName = "lang/" + lang + ".yml";
             File langFile = new File(plugin.getDataFolder(), fileName);
             YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
 
@@ -112,7 +107,6 @@ public class Updater {
                 updateFile(fileName, langConfig, langVersion);
             }
         }
-
     }
 
     private void updateFile(String fileName, YamlConfiguration fileConfig, String newVersion) {

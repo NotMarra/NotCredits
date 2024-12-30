@@ -1,8 +1,8 @@
 package com.notmarra.notcredits.cmd;
 
-import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.NotCredits;
 import com.notmarra.notcredits.util.DatabaseManager;
-import com.notmarra.notcredits.util.Decimal;
+import com.notmarra.notcredits.util.Numbers;
 import com.notmarra.notcredits.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class UniCommand {
     public static void execute(CommandSender sender, String[] args, String operator, String permission, String message_player, String message_admin, String message_invalid) {
@@ -17,7 +18,7 @@ public class UniCommand {
         Player player = isConsole ? null : (Player) sender;
 
         if (!isConsole && !player.hasPermission(permission)) {
-            Message.sendMessage(player, "no_perm", isConsole, null);
+            Message.sendMessage(player, "no_perm", false, null);
             return;
         }
 
@@ -26,13 +27,28 @@ public class UniCommand {
             return;
         }
 
-        Player targetPlayer = Bukkit.getPlayer(args[1]);
-        if (targetPlayer == null) {
+        String targetPlayerId = DatabaseManager.getInstance(NotCredits.getInstance()).getPlayerUUID(args[1]);
+        if (targetPlayerId == null) {
             Message.sendMessage(player, "player_not_found", isConsole, null);
             return;
         }
+        boolean isOnline = true;
+        Player targetPlayer = Bukkit.getPlayer(UUID.fromString(targetPlayerId));
+        if (targetPlayer == null) {
+            isOnline = false;
+            targetPlayer = Bukkit.getOfflinePlayer(UUID.fromString(targetPlayerId)).getPlayer();
+        }
+        final boolean is_online_final = isOnline;
+        final String playerName;
+        final Player targetPlayer_final = targetPlayer;
+        if (targetPlayer != null) {
+            playerName = targetPlayer.getName();
+        } else {
+            playerName = args[1];
+        }
 
-        Bukkit.getScheduler().runTaskAsynchronously(Notcredits.getInstance(), () -> {
+
+        Bukkit.getScheduler().runTaskAsynchronously(NotCredits.getInstance(), () -> {
             double amount;
             try {
                 amount = Double.parseDouble(args[2]);
@@ -46,7 +62,7 @@ public class UniCommand {
                 return;
             }
 
-            double credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(targetPlayer.getUniqueId().toString());
+            double credits = DatabaseManager.getInstance(NotCredits.getInstance()).getBalance(targetPlayerId);
             double actualAmount = amount;
             switch (operator) {
                 case "add":
@@ -69,14 +85,16 @@ public class UniCommand {
                     return;
             }
 
-            DatabaseManager.getInstance(Notcredits.getInstance()).setBalance(targetPlayer.getUniqueId().toString(), credits);
+            DatabaseManager.getInstance(NotCredits.getInstance()).setBalance(targetPlayerId, credits);
 
             Map<String, String> replacements = new HashMap<>();
-            replacements.put("amount", Decimal.formatBalance(actualAmount));
-            replacements.put("player", targetPlayer.getName());
+            replacements.put("amount", Numbers.formatBalance(actualAmount));
+            replacements.put("player", playerName);
             Message.sendMessage(player, message_admin, isConsole, replacements);
             replacements.remove("player");
-            Message.sendMessage(targetPlayer, message_player, false, replacements);
+            if (is_online_final) {
+                Message.sendMessage(targetPlayer_final, message_player, false, replacements);
+            }
         });
     }
 }

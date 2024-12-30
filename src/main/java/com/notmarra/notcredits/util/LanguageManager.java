@@ -1,6 +1,6 @@
 package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.NotCredits;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -18,9 +18,9 @@ public class LanguageManager {
         messages.clear();
         messageLists.clear();
 
-        currentLang = Notcredits.getInstance().getConfig().getString("lang", "en");
-        File langFile = new File(Notcredits.getInstance().getDataFolder(), "lang/" + currentLang + ".yml");
-        File enFile = new File(Notcredits.getInstance().getDataFolder(), "lang/en.yml");
+        currentLang = NotCredits.getInstance().getConfig().getString("lang", "en");
+        File langFile = new File(NotCredits.getInstance().getDataFolder(), "lang/" + currentLang + ".yml");
+        File enFile = new File(NotCredits.getInstance().getDataFolder(), "lang/en.yml");
 
         YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
         YamlConfiguration enConfig = YamlConfiguration.loadConfiguration(enFile);
@@ -50,4 +50,5 @@ public class LanguageManager {
     public static List<String> getMessageList(String key) {
         return messageLists.getOrDefault(key, Collections.singletonList("Message list not found: " + key));
     }
+
 }

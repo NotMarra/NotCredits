@@ -1,21 +1,23 @@
 package com.notmarra.notcredits.events;
 
-import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.NotCredits;
 import com.notmarra.notcredits.util.DatabaseManager;
-import com.notmarra.notcredits.util.Decimal;
+import com.notmarra.notcredits.util.Numbers;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
 public class Placeholders extends PlaceholderExpansion {
-    private final Notcredits plugin;
+    private final NotCredits plugin;
 
-    public Placeholders(Notcredits plugin) {
+    public Placeholders(NotCredits plugin) {
         this.plugin = plugin;
     }
+
     @Override
     public boolean persist() {
         return true;
     }
+
     public boolean canRegister() {
         return true;
     }
@@ -29,7 +31,7 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     public String getVersion() {
-        return Notcredits.getInstance().getDescription().getVersion();
+        return NotCredits.getInstance().getDescription().getVersion();
     }
 
 
@@ -40,10 +42,16 @@ public class Placeholders extends PlaceholderExpansion {
             String pname = player.getUniqueId().toString();
             double credits = 0.0D;
 
+            credits = DatabaseManager.getInstance(NotCredits.getInstance()).getBalance(pname);
 
-            credits = DatabaseManager.getInstance(Notcredits.getInstance()).getBalance(pname);
+            return String.valueOf(Math.round(credits));
+        } else if (identifier.equals("credits_formatted")) {
+            String pname = player.getUniqueId().toString();
+            double credits = 0.0D;
 
-            return Decimal.formatBalance(credits);
+            credits = DatabaseManager.getInstance(NotCredits.getInstance()).getBalance(pname);
+
+            return Numbers.formatBalance(credits);
         } else {
             if (identifier.startsWith("top_")) {
                 String[] parts = identifier.split("_");
@@ -51,16 +59,17 @@ public class Placeholders extends PlaceholderExpansion {
                 if (parts.length == 2) {
                     position = Integer.parseInt(parts[1])-1;
 
-                    if (Math.round(DatabaseManager.getInstance(Notcredits.getInstance()).getBalanceByOrder(position)) == -1L) {
-                        return Notcredits.getInstance().getConfig().getString("placeholder_no_data");
+                    if (DatabaseManager.getInstance(NotCredits.getInstance()).getPlayerByBalance(position) == null) {
+                        return NotCredits.getInstance().getConfig().getString("placeholder_no_data");
+                    } else {
+                        return Numbers.formatBalance(Double.parseDouble(DatabaseManager.getInstance(NotCredits.getInstance()).getPlayerByBalance(position)));
                     }
-                    return String.valueOf(Math.round(DatabaseManager.getInstance(Notcredits.getInstance()).getBalanceByOrder(position)));
                 } else if (parts.length == 3 && parts[0].equals("top") && parts[1].equals("name")) {
                     position = Integer.parseInt(parts[2])-1;
-                    if (DatabaseManager.getInstance(Notcredits.getInstance()).getPlayerByBalance(position) == null) {
-                        return Notcredits.getInstance().getConfig().getString("placeholder_no_data");
+                    if (DatabaseManager.getInstance(NotCredits.getInstance()).getPlayerByBalance(position) == null) {
+                        return NotCredits.getInstance().getConfig().getString("placeholder_no_data");
                     } else {
-                        return DatabaseManager.getInstance(Notcredits.getInstance()).getPlayerByBalance(position);
+                        return DatabaseManager.getInstance(NotCredits.getInstance()).getPlayerByBalance(position);
                     }
                 }
             }
