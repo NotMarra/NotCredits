@@ -1,4 +1,7 @@
 jdk:
   - openjdk21
 maven:
-  version: 3.6.3
+  version: 3.9.6
+before_install:
+  - sdk install java 21.0.1-tem
+  - sdk use java 21.0.1-tem
