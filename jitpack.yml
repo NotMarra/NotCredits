@@ -1,7 +1,12 @@
 jdk:
   - openjdk21
-maven:
-  version: 3.9.6
+
 before_install:
-  - sdk install java 21.0.1-tem
-  - sdk use java 21.0.1-tem
+  - wget https://archive.apache.org/dist/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+  - tar -xvf apache-maven-3.9.6-bin.tar.gz
+  - export M2_HOME=$PWD/apache-maven-3.9.6
+  - export PATH=$M2_HOME/bin:$PATH
+  - mvn --version
+
+install:
+  - mvn clean install -DskipTests
