@@ -20,6 +20,9 @@ public class TabCompletion implements TabCompleter {
             completions.add("set");
             completions.add("reload");
             completions.add("help");
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                completions.add(player.getName());
+            }
         } else {
             if (args.length == 2) {
                 currentArg = args[0].toLowerCase();

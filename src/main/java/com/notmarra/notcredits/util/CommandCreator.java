@@ -13,7 +13,7 @@ public class CommandCreator implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            BaseCommand.execute(sender);
+            BaseCommand.execute(sender, null);
         }
 
         if (args.length >= 1) {
@@ -35,7 +35,7 @@ public class CommandCreator implements CommandExecutor {
                     HelpCommand.execute(sender);
                     break;
                 default:
-                    BaseCommand.execute(sender);
+                    BaseCommand.execute(sender, args[0]);
                     break;
             }
         }

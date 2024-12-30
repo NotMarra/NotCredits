@@ -1,6 +1,6 @@
 package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.NotCredits;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -29,14 +29,14 @@ public class Files {
     }
 
     public static void createFile(String name) {
-        File file = new File(Notcredits.getInstance().getDataFolder().getAbsolutePath(), name);
+        File file = new File(NotCredits.getInstance().getDataFolder().getAbsolutePath(), name);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
-            Notcredits.getInstance().saveResource(name, false);
+            NotCredits.getInstance().saveResource(name, false);
         }
 
         try {
-            Reader reader = new InputStreamReader(Notcredits.getInstance().getResource(name));
+            Reader reader = new InputStreamReader(NotCredits.getInstance().getResource(name));
             YamlConfiguration.loadConfiguration(reader);
             reader.close();
         } catch (IOException e) {
@@ -45,14 +45,14 @@ public class Files {
     }
 
     public static void createFileAs(String source, String name) {
-        File targetFile = new File(Notcredits.getInstance().getDataFolder(), name);
+        File targetFile = new File(NotCredits.getInstance().getDataFolder(), name);
         if (!targetFile.exists()) {
             targetFile.getParentFile().mkdirs();
-            try (InputStream inputStream = Notcredits.getInstance().getResource(source)) {
+            try (InputStream inputStream = NotCredits.getInstance().getResource(source)) {
                 if (inputStream != null) {
                     java.nio.file.Files.copy(inputStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } else {
-                    Notcredits.getInstance().getLogger().warning("Resource not found: " + source);
+                    NotCredits.getInstance().getLogger().warning("Resource not found: " + source);
                     return;
                 }
             } catch (IOException e) {
@@ -62,7 +62,7 @@ public class Files {
         }
 
         try {
-            Reader reader = new InputStreamReader(Notcredits.getInstance().getResource(name));
+            Reader reader = new InputStreamReader(NotCredits.getInstance().getResource(name));
             YamlConfiguration.loadConfiguration(reader);
             reader.close();
         } catch (Exception e) {

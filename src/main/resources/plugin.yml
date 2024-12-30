@@ -1,7 +1,7 @@
 name: NotCredits
 version: ${project.version}
-main: com.notmarra.notcredits.Notcredits
-api-version: 1.13
+main: com.notmarra.notcredits.NotCredits
+api-version: 1.21
 authors: [ NotMarra ]
 description: Economy plugin
 website: www.notmarra.com

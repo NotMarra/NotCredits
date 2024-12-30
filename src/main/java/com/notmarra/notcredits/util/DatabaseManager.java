@@ -1,6 +1,6 @@
 package com.notmarra.notcredits.util;
 
-import com.notmarra.notcredits.Notcredits;
+import com.notmarra.notcredits.NotCredits;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DatabaseManager {
-
     private final String databaseType;
     private final String host;
     private final String name;
@@ -25,7 +24,7 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private static HikariDataSource dataSource;
 
-    private DatabaseManager(Notcredits plugin) {
+    private DatabaseManager(NotCredits plugin) {
         FileConfiguration config = plugin.getConfig();
         this.databaseType = config.getString("data.type").toLowerCase();
         this.host = config.getString("data.mysql.host");
@@ -37,7 +36,7 @@ public class DatabaseManager {
         this.fileName = config.getString("data.file");
     }
 
-    public static DatabaseManager getInstance(Notcredits plugin) {
+    public static DatabaseManager getInstance(NotCredits plugin) {
         if (instance == null) {
             instance = new DatabaseManager(plugin);
         }
@@ -48,45 +47,51 @@ public class DatabaseManager {
         dataSource.close();
     }
 
-
     public boolean isConnected() {
         return dataSource != null;
     }
 
     public void setupDB() {
+        HikariConfig config;
+        config = prepareConfig();
+
         if (databaseType.equals("mysql")) {
-            setupMySQL();
+            setupMySQL(config);
         } else {
-            setupSQLite();
+            setupSQLite(config);
         }
-    }
-    private void setupSQLite() {
-        HikariConfig config;
-        config = prepareConfig("jdbc:sqlite:" + Notcredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName + ".db");
 
         dataSource = new HikariDataSource(config);
-
         setupTable();
     }
 
-    private void setupMySQL() {
-        HikariConfig config;
-        config = prepareConfig("jdbc:mysql://" + host + ":" + port + "/" + name);
+    private void setupSQLite(HikariConfig config) {
+        config.setDriverClassName("org.sqlite.JDBC");
 
-        dataSource = new HikariDataSource(config);
+        String fullpath = NotCredits.getInstance().getDataFolder().getAbsolutePath() + File.separator + fileName;
+        config.setJdbcUrl("jdbc:sqlite:" + fullpath);
 
-        setupTable();
-    }
+        config.setMaximumPoolSize(1);
+        config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
 
-    private HikariConfig prepareConfig(String url) {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(url);
-        config.setUsername(user);
-        config.setPassword(pass);
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+    }
+
+    private void setupMySQL(HikariConfig config) {
+        config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + name);
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+    }
+
+    private HikariConfig prepareConfig() {
+        HikariConfig config = new HikariConfig();
+        config.setUsername(user);
+        config.setPassword(pass);
         config.setPoolName("NotCredits");
+
         return config;
     }
 
@@ -157,6 +162,25 @@ public class DatabaseManager {
         setSTMT("INSERT INTO " + table + " (uuid, player_name, balance) VALUES (?, ?, ?)", uuid, player_name, balance);
     }
 
+    public String getPlayerName(String uuid) {
+        return getSTMTSingle("SELECT player_name FROM " + table + " WHERE uuid = ?", uuid);
+    }
+
+    public String getPlayerUUID(String player_name) {
+        return getSTMTSingle("SELECT uuid FROM " + table + " WHERE player_name = ?", player_name);
+    }
+
+    public List<String> getPlayers() {
+        List<Map<String, String>> result = getSTMT("SELECT player_name FROM " + table);
+        if (result == null) return null;
+
+        List<String> players = new ArrayList<>();
+        for (Map<String, String> row : result) {
+            players.add(row.get("player_name"));
+        }
+        return players;
+    }
+
     public void setBalance(String uuid, double balance) {
         setSTMT("UPDATE " + table + " SET balance = ? WHERE uuid = ?", balance, uuid);
     }
@@ -203,4 +227,3 @@ public class DatabaseManager {
         return resultList;
     }
 }
-

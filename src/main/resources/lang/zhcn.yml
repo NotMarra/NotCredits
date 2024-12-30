@@ -20,6 +20,7 @@ help:
 
 # 玩家
 credits: "%prefix%你拥有 <#005ec9><b>%credits%</b></#005ec9><white> 信用点数."
+credits_other: "%prefix%玩家 <#005ec9><b>%player%</b></#005ec9><white> 拥有 <#005ec9><b>%credits%</b></#005ec9><white> 信用点数."
 credits_set: "%prefix%你的信用点数已被调整为 <#005ec9><b>%amount%</b></#005ec9><white>!"
 credits_add: "%prefix%你已获得 <#005ec9><b>%amount%</b></#005ec9><white> 信用点数."
 credits_remove: "%prefix%已从你的账户中支出 <#005ec9><b>%amount%</b></#005ec9><white> 信用点数."
@@ -42,4 +43,4 @@ player_not_found: "%prefix%玩家不在线或不存在."
 no_perm: "%prefix%你没有执行此命令的权限!"
 
 # 请勿修改此项
-ver: 1
+ver: 2

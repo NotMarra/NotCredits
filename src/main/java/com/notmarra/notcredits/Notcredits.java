@@ -3,11 +3,7 @@ package com.notmarra.notcredits;
 import com.notmarra.notcredits.events.Economy_NotCredits;
 import com.notmarra.notcredits.events.Placeholders;
 import com.notmarra.notcredits.events.PlayerJoin;
-import com.notmarra.notcredits.nms.NMSHandler;
-import com.notmarra.notcredits.nms.versions.NMSHandler_HS;
-import com.notmarra.notcredits.nms.versions.NMSHandler_Legacy;
 import com.notmarra.notcredits.util.*;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -20,136 +16,111 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public final class Notcredits extends JavaPlugin {
-   private static Notcredits instance;
-   FileConfiguration config = this.getConfig();
-   Updater updater;
-   public NMSHandler nmsHandler;
-   public BukkitAudiences adventure;
+public final class NotCredits extends JavaPlugin {
 
-   @Override
-   public void onEnable() {
-      instance = this;
-      this.config = this.getConfig();
-      this.config.options().copyDefaults(true);
-      this.saveDefaultConfig();
+    private static NotCredits instance;
+    FileConfiguration config = this.getConfig();
+    Updater updater;
 
-      this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), "1", "1", "https://github.com/NotMarra/NotCredits/releases");
+    @Override
+    public void onEnable() {
+        instance = this;
+        this.config = this.getConfig();
+        this.config.options().copyDefaults(true);
+        this.saveDefaultConfig();
 
-      DatabaseManager.getInstance(this).setupDB();
+        this.updater = new Updater(this, "NotCredits", this.getDescription().getVersion(), "2", "2", "https://github.com/NotMarra/NotCredits/releases");
 
-      this.nmsHandler = getNMSHandler();
+        DatabaseManager.getInstance(this).setupDB();
 
-      this.adventure = BukkitAudiences.create(this);
+        LangFiles.createLang();
+        LanguageManager.loadMessages();
 
-      LangFiles.createLang();
-      LanguageManager.loadMessages();
+        updater.checkFilesAndUpdate();
 
-      this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
-      this.getCommand("credits").setExecutor(new CommandCreator());
-      this.getCommand("nc").setExecutor(new CommandCreator());
-      this.getCommand("notcredits").setExecutor(new CommandCreator());
-      this.getCommand("credits").setTabCompleter(new TabCompletion());
-      this.getCommand("nc").setTabCompleter(new TabCompletion());
-      this.getCommand("notcredits").setTabCompleter(new TabCompletion());
+        this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
+        this.getCommand("credits").setExecutor(new CommandCreator());
+        this.getCommand("nc").setExecutor(new CommandCreator());
+        this.getCommand("notcredits").setExecutor(new CommandCreator());
+        this.getCommand("credits").setTabCompleter(new TabCompletion());
+        this.getCommand("nc").setTabCompleter(new TabCompletion());
+        this.getCommand("notcredits").setTabCompleter(new TabCompletion());
 
-      Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
-         this.updater.checkForUpdates();
-      }, 0L, 432000L);
+        if (this.config.getBoolean("update_notifications")) {
+            Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+                this.updater.checkForUpdates();
+            }, 0L, 432000L);
+        }
 
-      updater.checkFilesAndUpdate();
+        if (this.config.getBoolean("vault")) {
+            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+                Bukkit.getServicesManager().register(Economy.class, new Economy_NotCredits(), this, ServicePriority.Normal);
+                this.getLogger().info("Successfully connected to plugin vault!");
+            } else {
+                this.getLogger().severe("Vault is enabled in config, but not found");
+                this.getLogger().severe("Shutting down the plugin...");
+                this.getServer().getPluginManager().disablePlugin(this);
+            }
+        }
 
-      if (this.config.getBoolean("vault")) {
-         if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            Bukkit.getServicesManager().register(Economy.class, new Economy_NotCredits(), this, ServicePriority.Normal);
-            this.getLogger().info("Successfully connected to plugin vault!");
-         } else {
-            this.getLogger().severe("Vault is enabled in config, but Vault not found");
-            this.getLogger().severe("Shutting down the plugin...");
-            this.getServer().getPluginManager().disablePlugin(this);
-         }
-      }
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            (new Placeholders(this)).register();
+            this.getLogger().info("Successfully loaded placeholders!");
+        } else {
+            this.getLogger().info("PlaceholderAPI not found, not loading placeholders!");
+        }
 
-      if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-         (new Placeholders(this)).register();
-         this.getLogger().info("Successfully loaded placeholders!");
-      } else {
-         this.getLogger().info("PlaceholderAPI not found, not loading placeholders!");
-      }
+        Metrics metrics = new Metrics(this, 18464);
 
-      Metrics metrics = new Metrics(this, 18464);
+        metrics.addCustomChart(new SimplePie("language", () -> {
+            return config.getString("lang", "unknown").toUpperCase();
+        }));
 
-      metrics.addCustomChart(new SimplePie("language", () -> {
-          return config.getString("lang", "unknown").toUpperCase();
-      }));
+        metrics.addCustomChart(new SimplePie("database_type", () -> {
+            return config.getString("data.type", "unknown").toUpperCase();
+        }));
 
-      metrics.addCustomChart(new SimplePie("database_type", () -> {
-          return config.getString("data.type", "unknown").toUpperCase();
-      }));
+        this.getLogger().info("Enabled successfully!");
+    }
 
-      this.getLogger().info("Enabled successfully!");
-   }
-   @Override
-   public void onDisable() {
-      if (DatabaseManager.getInstance(this).isConnected()) {
-         DatabaseManager.getInstance(this).close();
-      }
-      this.getLogger().info("Disabled successfully!");
-   }
+    @Override
+    public void onDisable() {
+        if (DatabaseManager.getInstance(this).isConnected()) {
+            DatabaseManager.getInstance(this).close();
+        }
+        this.getLogger().info("Disabled successfully!");
+    }
 
-   public static Notcredits getInstance() {
-      return instance;
-   }
+    public static NotCredits getInstance() {
+        return instance;
+    }
 
-   public void reload() {
-      this.reloadConfig();
-      this.config = this.getConfig();
-      LanguageManager.loadMessages();
-      this.getLogger().info("Plugin reloaded successfully!");
-   }
+    public static final List<String> SUPPORTED_LANGUAGES = Arrays.asList(
+            "en", "cz", "zhcn", "ptbr"
+    );
 
-   public static final List<String> MINIMESSAGE_SUPPORTED_VERSIONS = Arrays.asList(
-           "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5",
-           "1.17", "1.17.1",
-           "1.18", "1.18.1", "1.18.2",
-           "1.19", "1.19.1", "1.19.2", "1.19.3", "1.19.4",
-           "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6",
-           "1.21", "1.21.1", "1.21.2", "1.21.3"
-   );
+    public void reload() {
+        this.reloadConfig();
+        this.config = this.getConfig();
+        LanguageManager.loadMessages();
+        this.getLogger().info("Plugin reloaded successfully!");
+    }
 
-   public static final List<String> SUPPORTED_LANGUAGES = Arrays.asList(
-           "en", "cz", "zhcn", "ptbr"
-   );
+    /**
+     * Sets the balance for a player identified by their unique UUID.
+     * Parameters:
+     * @param uuid: Unique identifier for the player.
+     * @param amount: The amount to set as the player's new balance.
+     */
+    public void setBalance(String uuid, double amount) {
+        DatabaseManager.getInstance(this).setBalance(uuid, amount);
+    }
 
-   private NMSHandler getNMSHandler() {
-      String version = Bukkit.getVersion().split("MC: ")[1].split("\\)")[0];
-
-      getLogger().info("Using NMS version: " + version);
-
-      if (MINIMESSAGE_SUPPORTED_VERSIONS.contains(version)) {
-         getLogger().info("Using MiniMessage Handler.");
-         return new NMSHandler_HS();
-      } else {
-         getLogger().info("Using Legacy chat Handler.");
-         return new NMSHandler_Legacy();
-      }
-   }
-
-   /**
-    * Sets the balance for a player identified by their unique UUID.
-    * Parameters:
-    * @param uuid: Unique identifier for the player.
-    * @param amount: The amount to set as the player's new balance.
-    */
-   public void setBalance(String uuid, double amount) {
-      DatabaseManager.getInstance(this).setBalance(uuid, amount);
-   }
-
-   /**
-    * Gets the balance for a player identified by their unique UUID.
-    * @param uuid
-    * @return The balance of the player.
-    */
+    /**
+     * Gets the balance for a player identified by their unique UUID.
+     * @param uuid
+     * @return The balance of the player.
+     */
 
     public double getBalance(String uuid) {
         return DatabaseManager.getInstance(this).getBalance(uuid);

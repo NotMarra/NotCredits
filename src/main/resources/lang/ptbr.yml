@@ -20,6 +20,7 @@ help:
 
 #player
 credits: "%prefix%Você tem <#005ec9><b>%credits%</b></#005ec9><white> créditos."
+credits_other: "%prefix%O jogador <#005ec9><b>%player%</b></#005ec9><white> tem <#005ec9><b>%credits%</b></#005ec9><white> créditos."
 credits_set: "%prefix%Seus créditos foram definidos para <#005ec9><b>%amount%</b></#005ec9><white>!"
 credits_add: "%prefix%Você recebeu<#005ec9><b>%amount%</b></#005ec9><white> créditos."
 credits_remove: "%prefix%<#005ec9><b>%amount%</b></#005ec9><white> de créditos foram removidos."
@@ -42,4 +43,4 @@ player_not_found: "%prefix%Jogador não encontrado."
 no_perm: "%prefix%Você não tem permissão suficiente para executar este comando!"
 
 #NÃO MUDE ISTO
-ver: 1
+ver: 2
