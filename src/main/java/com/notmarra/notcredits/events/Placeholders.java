@@ -59,10 +59,10 @@ public class Placeholders extends PlaceholderExpansion {
                 if (parts.length == 2) {
                     position = Integer.parseInt(parts[1])-1;
 
-                    if (DatabaseManager.getInstance(NotCredits.getInstance()).getPlayerByBalance(position) == null) {
+                    if (DatabaseManager.getInstance(NotCredits.getInstance()).getBalanceByOrder(position) == 0) {
                         return NotCredits.getInstance().getConfig().getString("placeholder_no_data");
                     } else {
-                        return Numbers.formatBalance(Double.parseDouble(DatabaseManager.getInstance(NotCredits.getInstance()).getPlayerByBalance(position)));
+                        return String.valueOf(Numbers.formatBalance(DatabaseManager.getInstance(NotCredits.getInstance()).getBalanceByOrder(position))) ;
                     }
                 } else if (parts.length == 3 && parts[0].equals("top") && parts[1].equals("name")) {
                     position = Integer.parseInt(parts[2])-1;
